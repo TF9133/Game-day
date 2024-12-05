@@ -19,42 +19,38 @@
     .container {
       display: flex;
       width: 1918px; /* 总宽度 */
-      height: 995px; /* 高度与左侧相同 */
+      height: 995px; /* 总高度 */
     }
 
     /* 左侧图像容器 */
     .left-image {
-      width: 1405px; /* 固定宽度 */
+      width: 1400px; /* 左侧宽度 */
       height: 100%; /* 高度与容器相同 */
       position: relative;
       overflow: hidden;
+      background-color: #add8e6; /* 背景颜色 */
     }
 
     .left-image img {
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1.5s ease-in-out;
-    }
-
-    .left-image img.active {
-      opacity: 1;
+      height: auto; /* 保持图片比例 */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* 居中显示 */
     }
 
     /* 右侧面板 */
     .right-panel {
       display: flex;
       flex-direction: column;
-      width: 513px; /* 固定宽度 */
-      height: 540px; /* 固定高度 */
+      width: 518px; /* 右侧宽度 */
+      height: 100%; /* 固定高度 */
+      background-color: #ffffff; /* 背景颜色 */
     }
 
     .top-box {
-      height: 270px; /* 固定高度的一半 */
+      height: 497.5px; /* 固定高度 */
       background-color: #333;
       color: white;
       display: flex;
@@ -84,10 +80,8 @@
     }
 
     .bottom-box {
-      height: 270px; /* 固定高度的一半 */
+      height: 497.5px; /* 固定高度 */
       background-color: #ddd;
-      background-size: cover;
-      background-position: center;
     }
 
     /* 新的底部区域 */
@@ -107,7 +101,7 @@
     }
 
     .scrolling-text {
-      flex: 1;
+      width: 518px; /* 与上方格子的宽度相同 */
       background-color: #001f4d; /* 深蓝色背景 */
       color: white;
       display: flex;
@@ -133,56 +127,6 @@
         transform: translateX(-100%);
       }
     }
-
-    /* 响应式设计 */
-    @media (max-width: 1200px) {
-      .top-box h1 {
-        font-size: 4vw;
-      }
-
-      .top-box .date {
-        font-size: 2.5vw;
-      }
-
-      .top-box .time {
-        font-size: 4.5vw;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-      }
-
-      .left-image {
-        height: 50%;
-        width: 100%;
-      }
-
-      .right-panel {
-        width: 100%;
-        height: 50%;
-      }
-
-      .top-box, .bottom-box {
-        height: 50%;
-      }
-
-      .bottom-section {
-        flex-direction: column;
-        height: auto;
-      }
-
-      .image-box {
-        width: 100%;
-        height: 150px;
-      }
-
-      .scrolling-text {
-        height: 150px;
-        font-size: 1.5em; /* 增加字体大小 */
-      }
-    }
   </style>
 </head>
 <body>
@@ -203,7 +147,7 @@
         <div class="date" id="current-date"></div>
         <div class="time" id="current-time"></div>
       </div>
-      <div class="bottom-box" style="background-image: url('your-image-url-here.jpg');"></div>
+      <div class="bottom-box"></div>
     </div>
   </div>
 
