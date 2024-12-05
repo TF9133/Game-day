@@ -18,15 +18,14 @@
 
     .container {
       display: flex;
-      flex-direction: row;
-      width: 100%;
-      height: 80%;
-      max-width: 1920px;
+      width: 1918px; /* 总宽度 */
+      height: 995px; /* 高度与左侧相同 */
     }
 
-    /* Left image container */
+    /* 左侧图像容器 */
     .left-image {
-      flex: 1.5;
+      width: 1405px; /* 固定宽度 */
+      height: 100%; /* 高度与容器相同 */
       position: relative;
       overflow: hidden;
     }
@@ -46,7 +45,7 @@
       opacity: 1;
     }
 
-    /* Right panel */
+    /* 右侧面板 */
     .right-panel {
       display: flex;
       flex-direction: column;
@@ -91,11 +90,11 @@
       background-position: center;
     }
 
-    /* New bottom section */
+    /* 新的底部区域 */
     .bottom-section {
       display: flex;
       width: 100%;
-      height: 85px; /* Fixed height for the section */
+      height: 85px; /* 固定高度 */
       margin-top: 0;
     }
 
@@ -109,21 +108,21 @@
 
     .scrolling-text {
       flex: 1;
-      background-color: #001f4d; /* Deep blue background */
+      background-color: #001f4d; /* 深蓝色背景 */
       color: white;
       display: flex;
       align-items: center;
       overflow: hidden;
       white-space: nowrap;
-      padding-left: 10px; /* Add padding for text */
+      padding-left: 10px; /* 添加文本内边距 */
       position: relative;
-      font-size: 1.5em; /* 增加字體大小 */
+      font-size: 1.5em; /* 增加字体大小 */
     }
 
     .scrolling-text span {
       display: inline-block;
-      animation: scroll 10s linear infinite; /* Smooth scrolling animation */
-      font-size: 1.5em; /* 增加字體大小 */
+      animation: scroll 10s linear infinite; /* 平滑滚动动画 */
+      font-size: 1.5em; /* 增加字体大小 */
     }
 
     @keyframes scroll {
@@ -135,7 +134,7 @@
       }
     }
 
-    /* Responsive Design */
+    /* 响应式设计 */
     @media (max-width: 1200px) {
       .top-box h1 {
         font-size: 4vw;
@@ -181,14 +180,14 @@
 
       .scrolling-text {
         height: 150px;
-        font-size: 1.5em; /* 增加字體大小 */
+        font-size: 1.5em; /* 增加字体大小 */
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Left image -->
+    <!-- 左侧图像 -->
     <div class="left-image">
       <img src="Poster.png" class="active" alt="Image 1">
       <img src="image2.jpg" alt="Image 2">
@@ -197,7 +196,7 @@
       <img src="5.jpg" alt="Image 5">
     </div>
 
-    <!-- Right panel -->
+    <!-- 右侧面板 -->
     <div class="right-panel">
       <div class="top-box">
         <h1>Game Day</h1>
@@ -208,19 +207,19 @@
     </div>
   </div>
 
-  <!-- New bottom section -->
+  <!-- 新的底部区域 -->
   <div class="bottom-section">
-    <!-- Image box -->
+    <!-- 图像框 -->
     <div class="image-box" style="background-image: url('https://www.hkww.org/weather/sticker/realtime.php');"></div>
 
-    <!-- Scrolling text -->
+    <!-- 滚动文本 -->
     <div class="scrolling-text">
       <span id="news-content">系統測試中</span>
     </div>
   </div>
 
   <script>
-    // Function to update the date and time
+    // 更新日期和时间的函数
     function updateDateTime() {
       const now = new Date();
       const date = now.toISOString().split('T')[0];
@@ -232,7 +231,7 @@
     setInterval(updateDateTime, 1000);
     updateDateTime();
 
-    // Slideshow functionality
+    // 幻灯片功能
     const images = document.querySelectorAll('.left-image img');
     let currentIndex = 0;
 
@@ -244,7 +243,7 @@
 
     setInterval(showNextImage, 8000);
 
-    // Function to update news content
+    // 更新新闻内容的函数
     function updateNews(newsArray) {
       const newsContent = document.getElementById('news-content');
       let index = 0;
@@ -252,10 +251,10 @@
       setInterval(() => {
         newsContent.textContent = newsArray[index];
         index = (index + 1) % newsArray.length;
-      }, 10000); // Change news every 10 seconds
+      }, 10000); // 每10秒更改新闻
     }
 
-    // Example news updates
+    // 示例新闻更新
     const newsArray = [
       "歡迎來到安柱初團 Game Day!!!",
       "Breaking: Star player scores a new record!",
