@@ -171,25 +171,30 @@
   </div>
 
   <script>
-    // Function to update the date and time to Hong Kong Time (UTC+8)
-function updateDateTime() {
-  const now = new Date();
-  const utcOffset = 8 * 60; // Hong Kong is UTC+8
-  const localTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (utcOffset * 60000));
+  // Function to update the date and time to Hong Kong Time (UTC+8)
+  function updateDateTime() {
+    const now = new Date();
+    const utcOffset = 8 * 60; // Hong Kong is UTC+8
+    const localTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (utcOffset * 60000));
 
-  // Adjust date to ensure it reflects Hong Kong's current date
-  const date = localTime.toLocaleDateString('en-HK', { year: 'numeric', month: '2-digit', day: '2-digit' });
-  const time = localTime.toLocaleTimeString('en-HK', { hour12: false }); // Format HH:MM:SS
+    // Format date as YYYY-MM-DD
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Asia/Hong_Kong' };
+    const dateParts = localTime.toLocaleDateString('en-HK', options).split('/');
+    
+    // Reorder date parts to YYYY-MM-DD format
+    const date = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+    
+    // Format time in 24-hour format
+    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Hong_Kong' };
+    const time = localTime.toLocaleTimeString('en-HK', timeOptions);
 
-  document.getElementById('current-date').textContent = date; // Display date
-  document.getElementById('current-time').textContent = time; // Display time
-}
+    document.getElementById('current-date').textContent = date;
+    document.getElementById('current-time').textContent = time;
+  }
 
-// Initial call to set the date and time immediately
-updateDateTime();
-setInterval(updateDateTime, 1000); // Update every second
-    }
-
+  setInterval(updateDateTime, 1000);
+  updateDateTime();
+</script>
     // Slideshow functionality
     const images = document.querySelectorAll('.left-image img');
     let currentIndex = 0;
