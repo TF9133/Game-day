@@ -1,1 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Day</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      height: 100vh; /* 使用視口高度 */
+      width: 100vw; /* 使用視口寬度 */
+      overflow: hidden;
+    }
 
+    .container {
+      display: flex;
+      width: 100%;
+      height: 80%; /* 調整高度，留出底部區域 */
+    }
+
+    .left-image {
+      width: 73%; /* 使用百分比 */
+      position: relative;
+      overflow: hidden;
+    }
+
+    .left-image img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+
+    .left-image img.active {
+      opacity: 1;
+    }
+
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      width: 27%; /* 使用百分比 */
+    }
+
+    .top-box {
+      height: 50%; /* 調整為相對高度 */
+      background-color: #333;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 10px; /* 調整內邊距 */
+    }
+
+    .top-box h1 {
+      font-size: 4vw; /* 使用相對單位，縮小字體 */
+      font-weight: bold;
+      margin: 0;
+      margin-bottom: 10px;
+    }
+
+    .top-box .date {
+      font-size: 3.5vw; /* 使用相對單位，縮小字體 */
+      margin: 10px 0;
+    }
+
+    .top-box .time {
+      font-size: 5vw; /* 使用相對單位，縮小字體 */
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .bottom-box {
+      height: 50%; /* 調整為相對高度 */
+      background-color: #ddd;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .bottom-section {
+      display: flex;
+      width: 100%;
+      height: 15%; /* 固定高度 */
+    }
+
+    .image-box {
+      width: 20%; /* 使用百分比 */
+      height: 100%; /* 100% 高度 */
+      background-color: #ccc;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .scrolling-text {
+      width: 80%; /* 使用百分比 */
+      background-color: #001f4d; /* 深藍色背景 */
+      color: white;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      white-space: nowrap;
+      padding-left: 10px; /* 添加內邊距 */
+      position: relative;
+      font-size: 1.4em; /* 增加字體大小 */
+    }
+
+    .scrolling-text span {
+      display: inline-block;
+      animation: scroll 10s linear infinite; /* 平滑滾動動畫 */
+      font-size: 1.8em; /* 增加字體大小 */
+      white-space: nowrap; /* 確保不換行 */
+    }
+
+    @keyframes scroll {
+      from {
+        transform: translateX(100%); /* 從右邊開始 */
+      }
+      to {
+        transform: translateX(-100%); /* 移動到左邊 */
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-box h1 {
+        font-size: 4vw; /* 更小的字體 */
+      }
+
+      .top-box .date,
+      .top-box .time {
+        font-size: 3.5vw; /* 調整字體大小 */
+      }
+
+      .scrolling-text {
+        font-size: 1.2em; /* 調整小屏幕的字體大小 */
+      }
+
+      .scrolling-text span {
+        font-size: 1.5em; /* 調整小屏幕的字體大小 */
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left-image">
+      <img src="Poster.png" class="active" alt="Image 1">
+      <img src="IMG_0816.jpg" alt="Image 2">
+      <img src="3.png" alt="Image 3">
+      <img src="4.png" alt="Image 4">
+      <img src="5.png" alt="Image 5">
+      <img src="6.png" alt="Image 6">
+      <img src="7.png" alt="Image 7">
+      <img src="8.png" alt="Image 8">
+      <img src="9.png" alt="Image 9">
+      <img src="10.png" alt="Image 10">
+      <img src="IMG_0815.jpg" alt="Image 11">
+      <img src="12.png" alt="Image 12">
+    </div>
+
+    <div class="right-panel">
+      <div class="top-box">
+        <h1>Game Day</h1>
+        <div class="date" id="current-date"></div>
+        <div class="time" id="current-time"></div>
+      </div>
+      <div class="bottom-box" style="background-image: url('Chr.png');"></div>
+    </div>
+  </div>
+
+  <div class="bottom-section">
+    <div class="image-box" style="background-image: url('https://www.hkww.org/weather/sticker/realtime.php');"></div>
+    <div class="scrolling-text">
+      <span id="news-content">系統測試中</span>
+    </div>
+  </div>
+
+  <script>
+    function updateDateTime() {
+      const now = new Date();
+      const utcOffset = 8 * 60; // 香港是 UTC+8
+      const localTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (utcOffset * 60000));
+
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Asia/Hong_Kong' };
+      const dateParts = localTime.toLocaleDateString('en-HK', options).split('/');
+      const date = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+      const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Hong_Kong' };
+      const time = localTime.toLocaleTimeString('en-HK', timeOptions);
+
+      document.getElementById('current-date').textContent = date;
+      document.getElementById('current-time').textContent = time;
+    }
+
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    const images = document.querySelectorAll('.left-image img');
+    let currentIndex = 0;
+
+    function showNextImage() {
+      images[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % images.length;
+      images[currentIndex].classList.add('active');
+    }
+
+    setInterval(showNextImage, 8000);
+
+    function updateNews(newsArray) {
+      const newsContent = document.getElementById('news-content');
+      let index = 0;
+
+      setInterval(() => {
+        newsContent.textContent = newsArray[index];
+        index = (index + 1) % newsArray.length;
+      }, 10000); // 每 10 秒更改新聞
+    }
+
+    const newsArray = [
+      "歡迎來到安柱初團 Game Day!!!",
+      "請追蹤初團IG: @cneccc_junior_fellowship2425",
+      "依度一共有九個攤位遊戲，玩晒記得嚟換獎品啦",
+      "你知道嗎：來團契達到某個次數會有 merit point"
+    ];
+
+    updateNews(newsArray);
+  </script>
+</body>
+</html>
