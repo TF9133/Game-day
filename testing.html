@@ -8,49 +8,48 @@
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: #f0f0f0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      height: 1080px;
+      width: 1920px;
       overflow: hidden;
     }
 
     .container {
       display: flex;
-      width: 1918px; /* 总宽度 */
-      height: 995px; /* 总高度 */
+      width: 100%;
+      height: 995px; /* Left image height */
     }
 
-    /* 左侧图像容器 */
+    /* Left image container */
     .left-image {
-      width: 1400px; /* 左侧宽度 */
-      height: 100%; /* 高度与容器相同 */
+      width: 1407px; /* Specified width */
       position: relative;
       overflow: hidden;
-      background-color: #add8e6; /* 背景颜色 */
     }
 
     .left-image img {
-      width: 100%;
-      height: auto; /* 保持图片比例 */
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%); /* 居中显示 */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
     }
 
-    /* 右侧面板 */
+    .left-image img.active {
+      opacity: 1;
+    }
+
+    /* Right panel */
     .right-panel {
       display: flex;
       flex-direction: column;
-      width: 518px; /* 右侧宽度 */
-      height: 100%; /* 固定高度 */
-      background-color: #ffffff; /* 背景颜色 */
+      width: 513px; /* Specified width */
     }
 
     .top-box {
-      height: 497.5px; /* 固定高度 */
+      height: 455px; /* Specified height */
       background-color: #333;
       color: white;
       display: flex;
@@ -69,69 +68,72 @@
     }
 
     .top-box .date {
-      font-size: 1.5vw;
+      font-size: 2vw; /* Increased font size */
       margin: 20px 0;
     }
 
     .top-box .time {
-      font-size: 3vw;
+      font-size: 4vw; /* Increased font size */
       font-weight: bold;
       margin-top: 20px;
     }
 
     .bottom-box {
-      height: 497.5px; /* 固定高度 */
+      height: 540px; /* Specified height */
       background-color: #ddd;
+      background-size: cover;
+      background-position: center;
     }
 
-    /* 新的底部区域 */
+    /* New bottom section */
     .bottom-section {
       display: flex;
       width: 100%;
-      height: 85px; /* 固定高度 */
+      height: 85px; /* Fixed height for the section */
       margin-top: 0;
     }
 
     .image-box {
-      width: 195px;
-      height: 85px;
+      width: 195px; /* Specified width */
+      height: 85px; /* Specified height */
       background-color: #ccc;
       background-size: cover;
       background-position: center;
     }
 
     .scrolling-text {
-      width: 518px; /* 与上方格子的宽度相同 */
-      background-color: #001f4d; /* 深蓝色背景 */
+      width: 1725px; /* Specified width */
+      background-color: #001f4d; /* Deep blue background */
       color: white;
       display: flex;
       align-items: center;
       overflow: hidden;
       white-space: nowrap;
-      padding-left: 10px; /* 添加文本内边距 */
+      padding-left: 10px; /* Add padding for text */
       position: relative;
-      font-size: 1.5em; /* 增加字体大小 */
+      font-size: 1.5em; /* Increase font size */
     }
 
     .scrolling-text span {
       display: inline-block;
-      animation: scroll 10s linear infinite; /* 平滑滚动动画 */
-      font-size: 1.5em; /* 增加字体大小 */
+      animation: scroll 10s linear infinite; /* Smooth scrolling animation */
+      font-size: 2em; /* Increased font size for scrolling text */
+      white-space: nowrap; /* Ensure it doesn't wrap */
     }
 
     @keyframes scroll {
       from {
-        transform: translateX(100%);
+        transform: translateX(100%); /* Start from the right edge */
       }
       to {
-        transform: translateX(-100%);
+        transform: translateX(-100%); /* Move to the left edge */
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- 左侧图像 -->
+    <!-- Left image -->
     <div class="left-image">
       <img src="Poster.png" class="active" alt="Image 1">
       <img src="image2.jpg" alt="Image 2">
@@ -140,30 +142,30 @@
       <img src="5.jpg" alt="Image 5">
     </div>
 
-    <!-- 右侧面板 -->
+    <!-- Right panel -->
     <div class="right-panel">
       <div class="top-box">
         <h1>Game Day</h1>
         <div class="date" id="current-date"></div>
         <div class="time" id="current-time"></div>
       </div>
-      <div class="bottom-box"></div>
+      <div class="bottom-box" style="background-image: url('your-image-url-here.jpg');"></div>
     </div>
   </div>
 
-  <!-- 新的底部区域 -->
+  <!-- New bottom section -->
   <div class="bottom-section">
-    <!-- 图像框 -->
+    <!-- Image box -->
     <div class="image-box" style="background-image: url('https://www.hkww.org/weather/sticker/realtime.php');"></div>
 
-    <!-- 滚动文本 -->
+    <!-- Scrolling text -->
     <div class="scrolling-text">
       <span id="news-content">系統測試中</span>
     </div>
   </div>
 
   <script>
-    // 更新日期和时间的函数
+    // Function to update the date and time
     function updateDateTime() {
       const now = new Date();
       const date = now.toISOString().split('T')[0];
@@ -175,7 +177,7 @@
     setInterval(updateDateTime, 1000);
     updateDateTime();
 
-    // 幻灯片功能
+    // Slideshow functionality
     const images = document.querySelectorAll('.left-image img');
     let currentIndex = 0;
 
@@ -187,7 +189,7 @@
 
     setInterval(showNextImage, 8000);
 
-    // 更新新闻内容的函数
+    // Function to update news content
     function updateNews(newsArray) {
       const newsContent = document.getElementById('news-content');
       let index = 0;
@@ -195,10 +197,10 @@
       setInterval(() => {
         newsContent.textContent = newsArray[index];
         index = (index + 1) % newsArray.length;
-      }, 10000); // 每10秒更改新闻
+      }, 10000); // Change news every 10 seconds
     }
 
-    // 示例新闻更新
+    // Example news updates
     const newsArray = [
       "歡迎來到安柱初團 Game Day!!!",
       "Breaking: Star player scores a new record!",
