@@ -171,17 +171,24 @@
   </div>
 
   <script>
-    // Function to update the date and time
-    function updateDateTime() {
-      const now = new Date();
-      const date = now.toISOString().split('T')[0];
-      const time = now.toLocaleTimeString();
-      document.getElementById('current-date').textContent = date;
-      document.getElementById('current-time').textContent = time;
-    }
+    // Function to update the date and time to Hong Kong Time (UTC+8)
+function updateDateTime() {
+  const now = new Date();
+  const utcOffset = 8 * 60; // Hong Kong is UTC+8
+  const localTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (utcOffset * 60000));
 
-    setInterval(updateDateTime, 1000);
-    updateDateTime();
+  // Adjust date to ensure it reflects Hong Kong's current date
+  const date = localTime.toLocaleDateString('en-HK', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  const time = localTime.toLocaleTimeString('en-HK', { hour12: false }); // Format HH:MM:SS
+
+  document.getElementById('current-date').textContent = date; // Display date
+  document.getElementById('current-time').textContent = time; // Display time
+}
+
+// Initial call to set the date and time immediately
+updateDateTime();
+setInterval(updateDateTime, 1000); // Update every second
+    }
 
     // Slideshow functionality
     const images = document.querySelectorAll('.left-image img');
