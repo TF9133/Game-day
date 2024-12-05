@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Game Day</title>
+  <title>Image Slideshow with Transition</title>
   <style>
     body {
       margin: 0;
@@ -129,6 +129,39 @@
         transform: translateX(-100%); /* Move to the left edge */
       }
     }
+
+  // Function to update the date and time to Hong Kong Time (UTC+8)
+  function updateDateTime() {
+    const now = new Date();
+    const utcOffset = 8 * 60; // Hong Kong is UTC+8
+    const localTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (utcOffset * 60000));
+
+    // Format date as YYYY-MM-DD
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Asia/Hong_Kong' };
+    const dateParts = localTime.toLocaleDateString('en-HK', options).split('/');
+    const date = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+
+    // Format time in 24-hour format
+    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Hong_Kong' };
+    const time = localTime.toLocaleTimeString('en-HK', timeOptions);
+
+    document.getElementById('current-date').textContent = date;
+    document.getElementById('current-time').textContent = time;
+  }
+
+  // Function to update the image in the left bottom box
+  function updateImage() {
+    const imageBox = document.querySelector('.image-box');
+    const newImageUrl = 'https://www.hkww.org/weather/sticker/realtime.php'; // Replace with your image URL
+    imageBox.style.backgroundImage = `url('${newImageUrl}?timestamp=${new Date().getTime()}')`; // Add timestamp to prevent caching
+  }
+
+  setInterval(updateDateTime, 1000); // Update time every second
+  updateDateTime(); // Initial call
+
+  setInterval(updateImage, 7 * 60 * 1000); // Update image every 7 minutes
+  updateImage(); // Initial call to set the image immediately
+
   </style>
 </head>
 <body>
@@ -194,7 +227,6 @@
 
   setInterval(updateDateTime, 1000);
   updateDateTime();
-</script>
 
     // Slideshow functionality
     const images = document.querySelectorAll('.left-image img');
