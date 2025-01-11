@@ -34,7 +34,7 @@
 
     .container {
       display: flex;
-      flex: 1; /* 填充剩餘高度 */
+      flex: 1;
     }
 
     .left-image {
@@ -95,8 +95,8 @@
     .bottom-section {
       display: flex;
       width: 100%;
-      height: calc(10%); /* 初始高度 */
-      transition: height 0.3s ease; /* 平滑調整高度 */
+      height: calc(10%);
+      transition: height 0.3s ease;
     }
 
     .image-box {
@@ -108,7 +108,7 @@
     }
 
     .scrolling-text {
-      width: 83%; /* 調整寬度，確保與圖片比例協調 */
+      width: 83%;
       background-color: #001f4d;
       color: white;
       display: flex;
@@ -122,9 +122,16 @@
 
     .scrolling-text span {
       display: inline-block;
-      animation: scroll 10s linear infinite;
+      animation: scroll linear infinite;
       font-size: 1.8em;
       white-space: nowrap;
+    }
+
+    .loading {
+      display: none;
+      font-size: 1.5em;
+      color: yellow;
+      padding-left: 10px;
     }
 
     @keyframes scroll {
@@ -167,7 +174,7 @@
     </div>
     <div class="right-panel">
       <div class="top-box">
-        <h1>Game Day</h1>
+        <h1>現在時間</h1>
         <div class="date" id="current-date"></div>
         <div class="time" id="current-time"></div>
       </div>
@@ -179,6 +186,7 @@
     <div class="image-box" style="background-image: url('https://www.hkww.org/weather/sticker/realtime.php');"></div>
     <div class="scrolling-text">
       <span id="news-content">系統測試中</span>
+      <span class="loading" id="loading-message">加載新聞中...</span>
     </div>
   </div>
 
@@ -188,38 +196,35 @@
     const bottomSection = document.querySelector('.bottom-section');
 
     fullscreenButton.addEventListener('click', () => {
-      // 支持多種瀏覽器的全屏 API
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen();
-      } else if (document.documentElement.webkitRequestFullscreen) { // Safari
+      } else if (document.documentElement.webkitRequestFullscreen) {
         document.documentElement.webkitRequestFullscreen();
-      } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+      } else if (document.documentElement.mozRequestFullScreen) {
         document.documentElement.mozRequestFullScreen();
-      } else if (document.documentElement.msRequestFullscreen) { // Edge
+      } else if (document.documentElement.msRequestFullscreen) {
         document.documentElement.msRequestFullscreen();
       }
 
-      fullscreenButton.style.display = 'none'; // 隱藏全屏按鈕
-      container.style.display = 'flex'; // 顯示網頁內容
-      bottomSection.style.display = 'flex'; // 顯示底部內容
+      fullscreenButton.style.display = 'none'; 
+      container.style.display = 'flex'; 
+      bottomSection.style.display = 'flex'; 
 
-      adjustBottomSection(); // 進入全屏後調整比例
+      adjustBottomSection(); 
     });
 
     function adjustBottomSection() {
       const screenHeight = window.innerHeight;
       const containerHeight = document.querySelector('.container').offsetHeight;
 
-      // 計算底部區域的高度，優先確保上方內容比例不變
       const bottomHeight = screenHeight - containerHeight;
-      if (bottomHeight > 50) { // 確保底部區域有足夠空間
+      if (bottomHeight > 50) {
         bottomSection.style.height = `${bottomHeight}px`;
       } else {
-        bottomSection.style.height = '50px'; // 最小高度
+        bottomSection.style.height = '50px'; 
       }
     }
 
-    // 監聽窗口大小調整
     window.addEventListener('resize', adjustBottomSection);
 
     function updateDateTime() {
@@ -240,24 +245,54 @@
     setInterval(updateDateTime, 1000);
     updateDateTime();
 
+    async function fetchNews() {
+      const loadingMessage = document.getElementById('loading-message');
+      loadingMessage.style.display = 'inline'; // 顯示加載提示
+
+      try {
+        const response = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://news.google.com/rss?hl=zh-HK&gl=HK&ceid=HK:zh-Hant'));
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        const data = await response.json();
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(data.contents, "text/xml");
+        const items = xml.getElementsByTagName('item');
+        
+        const newsArray = Array.from(items).map(item => item.getElementsByTagName('title')[0].textContent);
+        updateNews(newsArray);
+      } catch (error) {
+        console.error('Error fetching news:', error);
+        document.getElementById('news-content').textContent = '無法加載新聞';
+      } finally {
+        loadingMessage.style.display = 'none'; // 隱藏加載提示
+      }
+    }
+
     function updateNews(newsArray) {
       const newsContent = document.getElementById('news-content');
       let index = 0;
 
-      setInterval(() => {
+      function showNextNews() {
+        if (newsArray.length === 0) return;
+
         newsContent.textContent = newsArray[index];
-        index = (index + 1) % newsArray.length;
-      }, 10000);
+        const textLength = newsArray[index].length;
+        const duration = Math.max(10, textLength * 0.5); // 根據字數調整速度
+        newsContent.style.animationDuration = `${duration}s`;
+
+        index++;
+        if (index >= newsArray.length) {
+          index = 0; // 重置索引
+          fetchNews(); // 重新獲取新聞
+        }
+      }
+
+      newsContent.addEventListener('animationend', showNextNews);
+      showNextNews(); // 顯示第一則新聞
     }
 
-    const newsArray = [
-      "歡迎來到安柱初團 Game Day!!!",
-      "請追蹤初團IG: @cneccc_junior_fellowship2425",
-      "依度一共有九個攤位遊戲，玩晒記得嚟換獎品啦",
-      "你知道嗎：來團契達到某個次數會有 merit point"
-    ];
-
-    updateNews(newsArray);
+    // 初始獲取新聞
+    fetchNews();
   </script>
 </body>
 </html>
