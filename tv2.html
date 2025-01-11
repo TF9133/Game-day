@@ -9,8 +9,9 @@
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
       height: 100vh;
-      width: 100vw;
       overflow: hidden;
     }
 
@@ -32,10 +33,8 @@
     }
 
     .container {
-      display: none; /* 初始隱藏內容 */
-      flex-direction: row;
-      width: 100%;
-      height: 90%;
+      display: flex;
+      flex: 1; /* 填充剩餘高度 */
     }
 
     .left-image {
@@ -94,10 +93,10 @@
     }
 
     .bottom-section {
-      display: none; /* 初始隱藏底部內容 */
-      flex-direction: row;
+      display: flex;
       width: 100%;
-      height: 10%;
+      height: calc(10%); /* 初始高度 */
+      transition: height 0.3s ease; /* 平滑調整高度 */
     }
 
     .image-box {
@@ -109,7 +108,7 @@
     }
 
     .scrolling-text {
-      width: 85%;
+      width: 83%; /* 調整寬度，確保與圖片比例協調 */
       background-color: #001f4d;
       color: white;
       display: flex;
@@ -203,7 +202,25 @@
       fullscreenButton.style.display = 'none'; // 隱藏全屏按鈕
       container.style.display = 'flex'; // 顯示網頁內容
       bottomSection.style.display = 'flex'; // 顯示底部內容
+
+      adjustBottomSection(); // 進入全屏後調整比例
     });
+
+    function adjustBottomSection() {
+      const screenHeight = window.innerHeight;
+      const containerHeight = document.querySelector('.container').offsetHeight;
+
+      // 計算底部區域的高度，優先確保上方內容比例不變
+      const bottomHeight = screenHeight - containerHeight;
+      if (bottomHeight > 50) { // 確保底部區域有足夠空間
+        bottomSection.style.height = `${bottomHeight}px`;
+      } else {
+        bottomSection.style.height = '50px'; // 最小高度
+      }
+    }
+
+    // 監聽窗口大小調整
+    window.addEventListener('resize', adjustBottomSection);
 
     function updateDateTime() {
       const now = new Date();
