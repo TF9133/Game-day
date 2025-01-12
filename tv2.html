@@ -168,7 +168,7 @@
   <div class="container">
     <div class="left-image">
       <video controls autoplay>
-        <source src="http://ali-vl.cztv.com/channels/lantian/channel010/360p.m3u8" type="video/mp4">
+        <source src="https://h5cdn3.kylintv.tv/live/gdtvhd_iphone.m3u8" type="video/mp4">
       </video>
     </div>
     <div class="right-panel">
@@ -204,6 +204,8 @@
     let newsInterval;
 
     fullscreenButton.addEventListener('click', () => {
+      console.log('全屏按鈕被點擊'); // 日誌輸出
+
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen();
       } else if (document.documentElement.webkitRequestFullscreen) {
@@ -303,7 +305,7 @@
     // 每秒檢查每分鐘的第15秒
     setInterval(() => {
       const now = new Date();
-      if (now.getMinutes() ===  && now.getSeconds() === 0) {  // 每分鐘的第15秒檢查
+      if (now.getMinutes() === 30 && now.getSeconds() === 0) {  // 每分鐘的第15秒檢查
         video.volume = 0.1;  // 調低音量
         backgroundMusic.currentTime = 0;  // 重置音樂播放時間
         backgroundMusic.play();  // 播放背景音樂
