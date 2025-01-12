@@ -168,7 +168,7 @@
   <div class="container">
     <div class="left-image">
       <video controls autoplay>
-        <source src="https://stream.sun0769.com/dgrtv1/mp4tv1_800/index.m3u8" type="video/mp4">
+        <source src="http://ali-vl.cztv.com/channels/lantian/channel010/360p.m3u8" type="video/mp4">
       </video>
     </div>
     <div class="right-panel">
@@ -300,22 +300,19 @@
       newsInterval = setInterval(showNextNews, 20000); // 每20秒切換一次新聞
     }
 
- // 每分鐘檢查每秒
-setInterval(() => {
-  const now = new Date();
-  if (now.getMinutes() === 20 && now.getSeconds() === 0) {  // 每分鐘的第15秒檢查
-    video.volume = 0.1;  // 調低音量
-    backgroundMusic.currentTime = 0;  // 重置音樂播放時間
-    backgroundMusic.play();  // 播放背景音樂
+    // 每秒檢查每分鐘的第15秒
+    setInterval(() => {
+      const now = new Date();
+      if (now.getMinutes() ===  && now.getSeconds() === 0) {  // 每分鐘的第15秒檢查
+        video.volume = 0.1;  // 調低音量
+        backgroundMusic.currentTime = 0;  // 重置音樂播放時間
+        backgroundMusic.play();  // 播放背景音樂
 
-    backgroundMusic.onended = () => {
-      video.volume = originalVolume;  // 音樂播放結束後恢復音量
-    };
-  }
-}, 1000);  /
+        backgroundMusic.onended = () => {
+          video.volume = originalVolume;  // 音樂播放結束後恢復音量
         };
       }
-    }, 60000);
+    }, 1000);  // 每秒檢查一次
 
     // 初始獲取新聞
     fetchNews();
