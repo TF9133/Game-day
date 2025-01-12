@@ -181,6 +181,8 @@
     </div>
   </div>
 
+  <audio id="background-music" src="example.mp3" preload="auto"></audio>
+
   <div class="bottom-section">
     <div class="image-box" style="background-image: url('https://www.hkww.org/weather/sticker/realtime.php');"></div>
     <div class="scrolling-text">
@@ -194,6 +196,9 @@
     const container = document.querySelector('.container');
     const bottomSection = document.querySelector('.bottom-section');
     const newsContent = document.getElementById('news-content');
+    const video = document.querySelector('video');
+    const backgroundMusic = document.getElementById('background-music');
+    let originalVolume = video.volume;  // 保存原始音量
     let newsArray = [];
     let index = 0;
     let newsInterval;
@@ -294,6 +299,20 @@
       showNextNews(); // 顯示第一則新聞
       newsInterval = setInterval(showNextNews, 20000); // 每20秒切換一次新聞
     }
+
+    // 每分鐘檢查整時
+    setInterval(() => {
+      const now = new Date();
+      if (now.getMinutes() === 10) {  // 每整點檢查
+        video.volume = 0.1;  // 調低音量
+        backgroundMusic.currentTime = 0;  // 重置音樂播放時間
+        backgroundMusic.play();  // 播放背景音樂
+
+        backgroundMusic.onended = () => {
+          video.volume = originalVolume;  // 音樂播放結束後恢復音量
+        };
+      }
+    }, 60000);
 
     // 初始獲取新聞
     fetchNews();
