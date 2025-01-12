@@ -168,7 +168,7 @@
   <div class="container">
     <div class="left-image">
       <video controls autoplay>
-        <source src="http://aktv.top/AKTV/live/aktv/null-5/AKTV.m3u8" type="video/mp4">
+        <source src="https://h5cdn3.kylintv.tv/live/gdtvhd_iphone.m3u8" type="video/mp4">
       </video>
     </div>
     <div class="right-panel">
@@ -181,7 +181,7 @@
     </div>
   </div>
 
-  <audio id="background-music" src="music.mp3" preload="auto"></audio>
+  <audio id="background-music" src="Music.mp3" preload="auto"></audio>
 
   <div class="bottom-section">
     <div class="image-box" style="background-image: url('https://www.hkww.org/weather/sticker/realtime.php');"></div>
@@ -303,7 +303,7 @@
     // 每分鐘檢查整時
     setInterval(() => {
       const now = new Date();
-      if (now.getMinutes() === 12) {  // 每整點檢查
+      if (now.getMinutes() === 15) {  // 每整點檢查
         video.volume = 0.1;  // 調低音量
         backgroundMusic.currentTime = 0;  // 重置音樂播放時間
         backgroundMusic.play();  // 播放背景音樂
