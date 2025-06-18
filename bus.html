@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>巴士到站信息</title>
     <style>
+  
         * {
             margin: 0;
             padding: 0;
@@ -21,8 +22,9 @@
         }
         
         /* 左侧视频播放器 */
-        .video-container {
-            width: 70%;
+        .video-placeholder {
+            width: 100%;
+				height: 100%;
             background: linear-gradient(135deg, #87CEEB, #6AB0DE);
             display: flex;
             justify-content: center;
@@ -30,17 +32,7 @@
             position: relative;
         }
         
-        .video-placeholder {
-            width: 80%;
-            height: 60%;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-        
+       
         .play-button {
             width: 80px;
             height: 80px;
@@ -61,7 +53,7 @@
         
         /* 右侧巴士信息 */
         .bus-container {
-            width: 30%;
+            width: 35%;
             background: white;
             padding: 30px;
             display: flex;
@@ -84,7 +76,7 @@
         }
         
         .route-number {
-            font-size: 2.3rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: #333;
             min-width: 100px;
@@ -105,7 +97,7 @@
         }
         
         .minutes {
-            font-size: 2.8rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: #E74C3C;
             min-width: 80px;
@@ -113,7 +105,7 @@
         }
         
         .arriving-now {
-            font-size: 2.3rem;
+            font-size: 1.5rem;
             font-weight: bold;
             color: #27ae60;
             min-width: 100px;
@@ -121,7 +113,7 @@
         }
         
         .no-service {
-            font-size: 2.8rem;
+            font-size: 1.2rem;
             color: #E74C3C;
         }
         
@@ -162,11 +154,32 @@
         }
     </style>
 </head>
+<body >
+    <button id="fullscreenButton" style="padding: 100px 30%; font-size: 18px; color: white; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;">進入全屏</button>
+    <script>
+        const button = document.getElementById('fullscreenButton');
+
+        button.addEventListener('click', () => {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
+            button.style.display = 'none'; // 按下後隱藏按鈕
+        });
+    </script>
+</body>
 <body>
     <!-- 左侧视频播放器 -->
     <div class="video-container">
         <div class="video-placeholder">
-            <div class="play-button"></div>
+<video width="100%" height="100%" controls autoplay style="object-fit: fill;">
+  <source src="https://hoytv-live-stream.hoy.tv/ch78/index-fhd.m3u8" type="video/mp4">
+		</video>
         </div>
     </div>
     
@@ -256,8 +269,8 @@
 
             // 5. 分组（每组4条路线）
             const groups = [];
-            for (let i = 0; i < routeArray.length; i += 3) {
-                groups.push(routeArray.slice(i, i + 3));
+            for (let i = 0; i < routeArray.length; i += 4) {
+                groups.push(routeArray.slice(i, i + 4));
             }
             
             return groups;
