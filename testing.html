@@ -180,6 +180,8 @@
       <img src="10.png" alt="Image 5">
       <img src="IMG_0815.jpg" alt="Image 5">
       <img src="12.png" alt="Image 5">
+    
+
     </div>
 
     <!-- Right panel -->
@@ -193,40 +195,34 @@
     </div>
   </div>
 
-  <!-- New bottom section -->
+    <!-- New bottom section -->
   <div class="bottom-section">
     <!-- Image box -->
     <div class="image-box" style="background-image: url('https://www.hkww.org/weather/sticker/realtime.php');"></div>
 
     <!-- Scrolling text -->
-    <div class="scrolling-text">
-      <span id="news-content">系統測試中</span>
+    <div class="scrolling-text" aria-live="polite">
+      <span id="news-content">載入新聞中...</span>
     </div>
   </div>
 
-<script>
-  // Function to update the date and time to Hong Kong Time (UTC+8)
-  function updateDateTime() {
-    const now = new Date();
-    const utcOffset = 8 * 60; // Hong Kong is UTC+8
-    const localTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (utcOffset * 60000));
-
-    // Format date as YYYY-MM-DD
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Asia/Hong_Kong' };
-    const dateParts = localTime.toLocaleDateString('en-HK', options).split('/');
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script>
     
-    // Reorder date parts to YYYY-MM-DD format
-    const date = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
-    
-    // Format time in 24-hour format
-    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Hong_Kong' };
-    const time = localTime.toLocaleTimeString('en-HK', timeOptions);
-
-    document.getElementById('current-date').textContent = date;
-    document.getElementById('current-time').textContent = time;
-  }
-
-  setInterval(updateDateTime, 1000);
+    // Function to update the date and time to Hong Kong Time (UTC+8)
+    function updateDateTime() {
+      const now = new Date();
+      const utcOffset = 8 * 60; // Hong Kong is UTC+8
+      const localTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (utcOffset * 60000));
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Asia/Hong_Kong' };
+      const dateParts = localTime.toLocaleDateString('en-HK', options).split('/');
+      const date = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+      const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Hong_Kong' };
+      const time = localTime.toLocaleTimeString('en-HK', timeOptions);
+      document.getElementById('current-date').textContent = date;
+      document.getElementById('current-time').textContent = time;
+    }
+setInterval(updateDateTime, 1000);
   updateDateTime();
 
     // Slideshow functionality
@@ -241,26 +237,132 @@
 
     setInterval(showNextImage, 8000);
 
-    // Function to update news content
-    function updateNews(newsArray) {
-      const newsContent = document.getElementById('news-content');
-      let index = 0;
 
-      setInterval(() => {
-        newsContent.textContent = newsArray[index];
-        index = (index + 1) % newsArray.length;
-      }, 10000); // Change news every 10 seconds
+    // Function to update the image in the left bottom box
+    function updateImage() {
+      const imageBox = document.querySelector('.image-box');
+      const newImageUrl = `https://www.hkww.org/weather/sticker/realtime.php?timestamp=${new Date().getTime()}`;
+      const img = new Image();
+      img.src = newImageUrl;
+      img.onload = () => {
+        imageBox.style.backgroundImage = `url('${newImageUrl}')`;
+      };
+      img.onerror = () => {
+        imageBox.style.backgroundImage = 'url("fallback-image.png")';
+      };
     }
 
-    // Example news updates
-    const newsArray = [
-      "歡迎來到安柱初團 Game Day!!!",
-      "請追蹤初團IG: @cneccc_junior_fellowship2425",
-      "依度一共有九個攤位遊戲，玩晒記得嚟換獎品啦",
-      "你知道嗎：來團契達到某個次數會有merit point"
-    ];
+    // Function to fetch and parse RSS titles using proxy (bypass CORS)
+    async function fetchNewsTitles(rssUrl) {
+      try {
+        const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+        console.log('Fetching RSS via proxy:', proxyUrl);
+        const response = await fetch(proxyUrl);
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+        const data = await response.json();
+        if (data.status !== 'ok' || !data.items) throw new Error('Invalid RSS response');
+        const titles = data.items.map(item => item.title.trim()).filter(title => title.length > 0);
+        console.log(`Fetched ${titles.length} titles from ${rssUrl}:`, titles);
+        return titles.length > 0 ? titles : null;
+      } catch (error) {
+        console.error(`RSS fetch error for ${rssUrl}:`, error);
+        return null;
+      }
+    }
 
-    updateNews(newsArray);
+    // Update news content from multiple RSS feeds
+    async function updateNews() {
+      const newsContent = document.getElementById('news-content');
+      newsContent.textContent = '載入新聞中...';
+      newsContent.style.animation = 'none'; // Reset animation
+
+      // Fetch all RSS feeds
+      const rssUrls = [
+        'https://rthk9.rthk.hk/rthk/news/rss/c_expressnews_clocal.xml', // Local
+        'https://rthk.hk/rthk/news/rss/c_expressnews_greaterchina.xml', // Greater China
+        'https://rthk.hk/rthk/news/rss/c_expressnews_cinternational.xml', // International
+        'https://rthk.hk/rthk/news/rss/c_expressnews_csport.xml' // Sports
+      ];
+
+      let allNewsArray = [];
+      for (const url of rssUrls) {
+        const titles = await fetchNewsTitles(url);
+        if (titles) {
+          allNewsArray = allNewsArray.concat(titles);
+        }
+      }
+
+      // Fallback to static array if no news loaded
+      if (allNewsArray.length === 0) {
+        console.warn('No RSS news loaded, using fallback array');
+        allNewsArray = [
+          "歡迎來到安柱初團 Game Day!!!",
+          "安柱初團IG: @cneccc_junior_fellowship2425",
+          "依度有九個攤位遊戲，玩晒記得嚟換獎品啦",
+          "你知道嗎：來團契達到3次會有merit point"
+        ];
+      }
+
+      console.log(`Total news loaded: ${allNewsArray.length}`);
+
+      let index = 0;
+
+      function setNews() {
+        // Reset animation and remove previous event listener
+        newsContent.style.animation = 'none';
+        newsContent.onanimationend = null;
+        void newsContent.offsetWidth; // Force reflow to ensure animation reset
+
+        // Set new news content
+        newsContent.textContent = allNewsArray[index];
+        console.log('Playing news:', allNewsArray[index]);
+        const textLength = allNewsArray[index].length;
+        const duration = Math.max(10, textLength * 0.3); // Adjusted duration (min 10s)
+        newsContent.style.animation = `scroll ${duration}s linear 1`; // Single run animation
+
+        // Fallback timeout to prevent animation stalling
+        const timeoutId = setTimeout(() => {
+          console.warn('Animation timeout triggered for news index:', index);
+          index++;
+          if (index >= allNewsArray.length) {
+            console.log('News cycle complete, reloading RSS immediately');
+            updateNews(); // Immediately reload RSS and restart
+            return;
+          }
+          setNews(); // Play next news
+        }, duration * 1000 + 1000); // Duration + 1s buffer
+
+        // Listen for animation end to trigger next news
+        newsContent.onanimationend = () => {
+          clearTimeout(timeoutId); // Clear fallback timeout
+          console.log('Animation ended for news index:', index);
+          index++;
+          if (index >= allNewsArray.length) {
+            console.log('News cycle complete, reloading RSS immediately');
+            updateNews(); // Immediately reload RSS and restart
+            return;
+          }
+          setNews(); // Play next news immediately
+        };
+      }
+
+      setNews(); // Start first news
+
+      // Periodic refresh every 30 minutes as backup
+      setTimeout(() => {
+        updateNews();
+      }, 30 * 60 * 1000);
+    }
+
+    // Initialize
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+    setInterval(updateImage, 7 * 60 * 1000);
+    updateImage();
+    updateNews(); // Start news from RSS
+
+   
+
   </script>
 </body>
 </html>
