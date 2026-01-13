@@ -1,0 +1,259 @@
+#EXTM3U x-tvg-url="https://live.fanmingming.com/e.xml"
+#EXTINF:-1 tvg-name="CCTV14" tvg-logo="https://live.fanmingming.com/tv/CCTV14.png",CCTV-14 少兒
+https://gcalic.v.myalicdn.com/gc/wgw05_1/index.m3u8?contentid=2820180516001
+#EXTINF:-1 tvg-name="CGTN" tvg-logo="https://live.fanmingming.com/tv/CGTN.png",CGTN
+https://english-livetx.cgtn.com/hls/yypdyyctzb_hd.m3u8
+#EXTINF:-1 tvg-name="CGTN西班牙語" tvg-logo="https://live.fanmingming.com/tv/CGTN西班牙語.png",CGTN西班牙語
+https://0472.org/hls/cgtnx.m3u8
+#EXTINF:-1 tvg-name="CGTN法語" tvg-logo="https://live.fanmingming.com/tv/CGTN法語.png",CGTN法語
+https://0472.org/hls/cgtnf.m3u8
+#EXTINF:-1 tvg-name="CGTN阿拉伯語" tvg-logo="https://live.fanmingming.com/tv/CGTN阿拉伯語.png",CGTN阿拉伯語
+https://0472.org/hls/cgtna.m3u8
+#EXTINF:-1 tvg-name="CGTN俄語" tvg-logo="https://live.fanmingming.com/tv/CGTN俄語.png",CGTN俄語
+https://0472.org/hls/cgtne.m3u8
+#EXTINF:-1 tvg-name="CGTN紀錄" tvg-logo="https://live.fanmingming.com/tv/CGTN紀錄.png",CGTN紀錄
+https://0472.org/hls/cgtnd.m3u8
+#EXTINF:-1 tvg-name="港台電視31" tvg-logo="https://live.fanmingming.com/tv/港台電視31.png",港台電視31
+https://rthktv31-live.akamaized.net/hls/live/2036818/RTHKTV31/master.m3u8
+#EXTINF:-1 tvg-name="港台電視32" tvg-logo="https://live.fanmingming.com/tv/港台電視32.png",港台電視32
+https://rthktv32-live.akamaized.net/hls/live/2036819/RTHKTV32/stream1/streamPlaylist.m3u8
+#EXTINF:-1 tvg-name="港台電視33" tvg-logo="https://live.fanmingming.com/tv/港台電視33.png",港台電視33
+https://rthktv33-live.akamaized.net/hls/live/2101641/RTHKTV33/master.m3u8
+#EXTINF:-1 tvg-name="港台電視34" tvg-logo="https://live.fanmingming.com/tv/港台電視34.png",港台電視34
+https://rthktv34-live.akamaized.net/hls/live/2101642/RTHKTV34/master.m3u8
+#EXTINF:-1 tvg-name="港台電視35" tvg-logo="https://live.fanmingming.com/tv/港台電視35.png",港台電視35
+https://rthktv35-live.akamaized.net/hls/live/2101643/RTHKTV35/master.m3u8
+#EXTINF:-1 tvg-name="耀才財經台" tvg-logo="https://live.fanmingming.com/tv/耀才財經台.png",耀才財經台
+https://v3.mediacast.hk/webcast/bshdlive-pc/playlist.m3u8
+#EXTINF:-1 tvg-name="鳳凰衛視中文台" tvg-logo="https://live.fanmingming.com/tv/鳳凰衛視中文台.png",鳳凰衛視中文台
+https://k44991.kylintv.tv/live/pxna_iphone.m3u8
+#EXTINF:-1 tvg-name="鳳凰衛視資訊台" tvg-logo="https://live.fanmingming.com/tv/鳳凰衛視資訊台.png",鳳凰衛視資訊台
+https://k44991.kylintv.tv/live/pxinhd_iphone.m3u8
+#EXTINF:-1 tvg-name="澳視澳門" tvg-logo="https://live.fanmingming.com/tv/澳視澳門.png",澳視澳門
+https://globallive.tdm.com.mo/ch1/ch1.live/playlist.m3u8
+#EXTINF:-1 tvg-name="澳視葡文" tvg-logo="https://live.fanmingming.com/tv/澳視葡文.png",澳視葡文
+https://globallive.tdm.com.mo/ch2/ch2.live/playlist.m3u8
+#EXTINF:-1 tvg-name="澳門體育" tvg-logo="https://live.fanmingming.com/tv/澳門體育.png",澳門體育
+https://globallive.tdm.com.mo/ch4/sport_ch4.live/playlist.m3u8
+#EXTINF:-1 tvg-name="澳門資訊" tvg-logo="https://live.fanmingming.com/tv/澳門資訊.png",澳門資訊
+https://globallive.tdm.com.mo/ch5/info_ch5.live/playlist.m3u8
+#EXTINF:-1 tvg-name="澳門綜藝" tvg-logo="https://live.fanmingming.com/tv/澳門綜藝.png",澳門綜藝
+https://globallive.tdm.com.mo/ch6/hd_ch6.live/playlist.m3u8
+#EXTINF:-1 tvg-name="澳門衞星-Macau" tvg-logo="https://live.fanmingming.com/tv/澳門衞星-Macau.png",澳門衞星-Macau
+https://globallive.tdm.com.mo/ch3/ch3.live/playlist.m3u8
+#EXTINF:-1 tvg-name="廣東衛視" tvg-logo="https://live.fanmingming.com/tv/廣東衛視.png",廣東衛視
+https://h5cdn3.kylintv.tv/live/gdtvhd_iphone.m3u8
+#EXTINF:-1 tvg-name="廣州綜合" tvg-logo="https://live.fanmingming.com/tv/廣州綜合.png",廣州綜合
+https://tencentplay.gztv.com/live/zonghes.m3u8?txSecret=0e326fe8dcc0ff6921fd342db0c7dcec&txTime=18db0495793
+#EXTINF:-1 tvg-name="廣州新聞" tvg-logo="https://live.fanmingming.com/tv/廣州新聞.png",廣州新聞
+https://tencentplay.gztv.com/live/xinwen.m3u8?txSecret=ab1b80b56dec56864c4a1fc781c7a433&txTime=18db0495793
+#EXTINF:-1 tvg-name="廣州4K南國都市" tvg-logo="https://live.fanmingming.com/tv/廣州4K南國都市.png",廣州4K南國都市
+https://tencentplay.gztv.com/live/nanguodushi.m3u8?txSecret=72a4d80e48162c8a370868697b01b94c&txTime=18db04d9d19
+#EXTINF:-1 tvg-name="廣東河源綜合" tvg-logo="https://live.fanmingming.com/tv/廣東河源綜合.png",廣東河源綜合
+https://tmpstream.hyrtv.cn/xwzh/sd/live.m3u8
+#EXTINF:-1 tvg-name="廣東河源生活" tvg-logo="https://live.fanmingming.com/tv/廣東河源生活.png",廣東河源生活
+https://tmpstream.hyrtv.cn/hygg/sd/live.m3u8
+#EXTINF:-1 tvg-name="廣東東莞新聞綜合" tvg-logo="https://live.fanmingming.com/tv/廣東東莞新聞綜合.png",廣東東莞新聞綜合
+https://stream.sun0769.com/dgrtv1/mp4tv1_800/index.m3u8
+#EXTINF:-1 tvg-name="廣東東莞生活資訊" tvg-logo="https://live.fanmingming.com/tv/廣東東莞生活資訊.png",廣東東莞生活資訊
+https://stream.sun0769.com/dgrtv1/mp4tv2_800/index.m3u8
+#EXTINF:-1 tvg-name="河北衛視4K" tvg-logo="https://live.fanmingming.com/tv/河北衛視4K.png",河北衛視4K
+https://event.pull.hebtv.com:443/live/live101.m3u8
+#EXTINF:-1 tvg-name="*古縣綜合" tvg-logo="https://live.fanmingming.com/tv/*古縣綜合.png",*古縣綜合
+https://l2fpdktp.live.sxmty.com/live/hls/e4c3b363cc4549788e2d983f403e07db/d99ce1eb686e41b9afc888110bd95aa7.m3u8?zshanxd
+#EXTINF:-1 tvg-name="*平遙融媒" tvg-logo="https://live.fanmingming.com/tv/*平遙融媒.png",*平遙融媒
+https://tntgjhjb.live.sxmty.com/live/hls/3a4585ac11ec4e1bb07b419101b370c3/baf63e2b313440c2a25d7859f9b73b05-1.m3u8?zshanxd
+#EXTINF:-1 tvg-name="*太谷新聞綜合" tvg-logo="https://live.fanmingming.com/tv/*太谷新聞綜合.png",*太谷新聞綜合
+https://p2.vzan.com/slowlive/596867413819827251/live.m3u8?zbid=1725814272&tpid=1516989100&type=0
+#EXTINF:-1 tvg-name="*汾西综合" tvg-logo="https://live.fanmingming.com/tv/*汾西综合.png",*汾西综合
+https://qmmqvzoz.live.sxmty.com/live/hls/f24f8a390c084386a564074c9260100c/be3fdf07606145739ab2c4b80fe0136a.m3u8?zshanxd
+#EXTINF:-1 tvg-name="黑龍江衛視" tvg-logo="https://live.fanmingming.com/tv/黑龍江衛視.png",黑龍江衛視
+https://idclive.hljtv.com:4430/live/hljws_own.m3u8
+#EXTINF:-1 tvg-name="黑龍江文體" tvg-logo="https://live.fanmingming.com/tv/黑龍江文體.png",黑龍江文體
+https://idclive.hljtv.com:4430/live/hljwy_hd.m3u8
+#EXTINF:-1 tvg-name="黑龍江影視" tvg-logo="https://live.fanmingming.com/tv/黑龍江影視.png",黑龍江影視
+https://idclive.hljtv.com:4430/live/hljys_hd.m3u8
+#EXTINF:-1 tvg-name="黑龍江新聞法治" tvg-logo="https://live.fanmingming.com/tv/黑龍江新聞法治.png",黑龍江新聞法治
+https://idclive.hljtv.com:4430/live/hljxw_hd.m3u8
+#EXTINF:-1 tvg-name="黑龍江都市" tvg-logo="https://live.fanmingming.com/tv/黑龍江都市.png",黑龍江都市
+https://idclive.hljtv.com:4430/live/dushi_hd.m3u8
+#EXTINF:-1 tvg-name="黑龍江農業科教" tvg-logo="https://live.fanmingming.com/tv/黑龍江農業科教.png",黑龍江農業科教
+https://idclive.hljtv.com:4430/live/hljgg_hd.m3u8
+#EXTINF:-1 tvg-name="黑龍江少兒" tvg-logo="https://live.fanmingming.com/tv/黑龍江少兒.png",黑龍江少兒
+https://idclive.hljtv.com:4430/live/hljse_hd.m3u8
+#EXTINF:-1 tvg-name="*甘南縣綜合" tvg-logo="https://live.fanmingming.com/tv/*甘南縣綜合.png",*甘南縣綜合
+https://rmplive.hljtv.com/live/gannan.m3u8
+#EXTINF:-1 tvg-name="*蘿北綜合" tvg-logo="https://live.fanmingming.com/tv/*蘿北綜合.png",*蘿北綜合
+https://rmplive.hljtv.com/live/luobei.m3u8
+#EXTINF:-1 tvg-name="蘇州新聞綜合" tvg-logo="https://live.fanmingming.com/tv/蘇州新聞綜合.png",蘇州新聞綜合
+https://live-auth.51kandianshi.com/szgd/csztv1.m3u8
+#EXTINF:-1 tvg-name="蘇州社會經濟" tvg-logo="https://live.fanmingming.com/tv/蘇州社會經濟.png",蘇州社會經濟
+https://live-auth.51kandianshi.com/szgd/csztv2.m3u8
+#EXTINF:-1 tvg-name="蘇州文化生活" tvg-logo="https://live.fanmingming.com/tv/蘇州文化生活.png",蘇州文化生活
+https://live-auth.51kandianshi.com/szgd/csztv3.m3u8
+#EXTINF:-1 tvg-name="蘇州電影娛樂信息" tvg-logo="https://live.fanmingming.com/tv/蘇州電影娛樂信息.png",蘇州電影娛樂信息
+https://live-auth.51kandianshi.com/szgd/csztv4.m3u8
+#EXTINF:-1 tvg-name="蘇州生活資訊" tvg-logo="https://live.fanmingming.com/tv/蘇州生活資訊.png",蘇州生活資訊
+https://live-auth.51kandianshi.com/szgd/csztv5.m3u8
+#EXTINF:-1 tvg-name="蘇州4K" tvg-logo="https://live.fanmingming.com/tv/蘇州4K.png",蘇州4K
+https://live-auth.51kandianshi.com/szgd/csztv4k_hd.m3u8
+#EXTINF:-1 tvg-name="*宜興新聞綜合" tvg-logo="https://live.fanmingming.com/tv/*宜興新聞綜合.png",*宜興新聞綜合
+https://yixing-tv-ori-hls.jstv.com/yixing-tv-ori/yixing_xw.m3u8
+#EXTINF:-1 tvg-name="浙江衛視4K" tvg-logo="https://live.fanmingming.com/tv/浙江衛視4K.png",浙江衛視4K
+https://play-qukan.cztv.com:443/live/1758879019692345.m3u8
+#EXTINF:-1 tvg-name="浙江衛視" tvg-logo="https://live.fanmingming.com/tv/浙江衛視.png",浙江衛視
+https://play-qukan.cztv.com/live/1746687519046362.m3u8
+#EXTINF:-1 tvg-name="浙江钱江都市" tvg-logo="https://live.fanmingming.com/tv/浙江钱江都市.png",浙江钱江都市
+https://ali-m-l.cztv.com/channels/lantian/channel002/1080p.m3u8
+#EXTINF:-1 tvg-name="浙江經濟生活" tvg-logo="https://live.fanmingming.com/tv/浙江經濟生活.png",浙江經濟生活
+https://ali-m-l.cztv.com/channels/lantian/channel003/1080p.m3u8
+#EXTINF:-1 tvg-name="浙江教科影視" tvg-logo="https://live.fanmingming.com/tv/浙江教科影視.png",浙江教科影視
+https://ali-m-l.cztv.com/channels/lantian/channel004/1080p.m3u8
+#EXTINF:-1 tvg-name="浙江民生休閑" tvg-logo="https://live.fanmingming.com/tv/浙江民生休閑.png",浙江民生休閑
+https://ali-m-l.cztv.com/channels/lantian/channel006/1080p.m3u8
+#EXTINF:-1 tvg-name="浙江新聞" tvg-logo="https://live.fanmingming.com/tv/浙江新聞.png",浙江新聞
+https://ali-m-l.cztv.com/channels/lantian/channel007/1080p.m3u8
+#EXTINF:-1 tvg-name="浙江少儿" tvg-logo="https://live.fanmingming.com/tv/浙江少儿.png",浙江少儿
+https://ali-m-l.cztv.com/channels/lantian/channel008/1080p.m3u8
+#EXTINF:-1 tvg-name="浙江國際" tvg-logo="https://live.fanmingming.com/tv/浙江國際.png",浙江國際
+https://ali-m-l.cztv.com/channels/lantian/channel010/1080p.m3u8
+#EXTINF:-1 tvg-name="之江紀錄" tvg-logo="https://live.fanmingming.com/tv/之江紀錄.png",之江紀錄
+https://ali-m-l.cztv.com/channels/lantian/channel012/1080p.m3u8
+#EXTINF:-1 tvg-name="浙江少兒" tvg-logo="https://live.fanmingming.com/tv/浙江少兒.png",浙江少兒
+https://ali-m-l.cztv.com/channels/lantian/channel008/1080p.m3u8
+#EXTINF:-1 tvg-name="湖州新闻综合" tvg-logo="https://live.fanmingming.com/tv/湖州新闻综合.png",湖州新闻综合
+https://hzcm-live.media.hugd.com/3f5fa7d64c7c46a38c6bd8ad35e836cc/65128273761b4731ae53729ea6dcf932.m3u8?auth_key=2277598215-9d21c15111244bea8d298c361d31a72e-0-d031198f58d44b0e91ba2e3f3b188865
+#EXTINF:-1 tvg-name="湖州文化娱乐" tvg-logo="https://live.fanmingming.com/tv/湖州文化娱乐.png",湖州文化娱乐
+https://hzcm-live.media.hugd.com/613c47f0ab0d4eaa98b21378d0db6ded/0051d31c9dd543a7825eea4e49675b2a.m3u8?auth_key=2277598059-0a5ebfa1c0dc4671b42a60810fc37039-0-fa625b7d1feab612062453c12e3c8887
+#EXTINF:-1 tvg-name="*蕭山綜合" tvg-logo="https://live.fanmingming.com/tv/*蕭山綜合.png",*蕭山綜合
+https://l.cztvcloud.com/channels/lantian/SXxiaoshan1/720p.m3u8
+#EXTINF:-1 tvg-name="*蕭山生活" tvg-logo="https://live.fanmingming.com/tv/*蕭山生活.png",*蕭山生活
+https://l.cztvcloud.com/channels/lantian/SXxiaoshan2/720p.m3u8
+#EXTINF:-1 tvg-name="*龙游新闻综合" tvg-logo="https://live.fanmingming.com/tv/*龙游新闻综合.png",*龙游新闻综合
+https://l.cztvcloud.com/channels/lantian/SXlongyou1/720p.m3u8
+#EXTINF:-1 tvg-name="*龙游生活娱乐" tvg-logo="https://live.fanmingming.com/tv/*龙游生活娱乐.png",*龙游生活娱乐
+https://l.cztvcloud.com/channels/lantian/SXlongyou2/720p.m3u8
+#EXTINF:-1 tvg-name="*海宁新闻综合" tvg-logo="https://live.fanmingming.com/tv/*海宁新闻综合.png",*海宁新闻综合
+https://p2hs.vzan.com/slowlive/317913155078575177/live.m3u8?zbid=293304&tpid=1708007815
+#EXTINF:-1 tvg-name="*廣德新聞綜合" tvg-logo="https://live.fanmingming.com/tv/*廣德新聞綜合.png",*廣德新聞綜合
+https://live.gdtv.ah.cn/live/newsTV.m3u8
+#EXTINF:-1 tvg-name="福州新聞綜合" tvg-logo="https://live.fanmingming.com/tv/福州新聞綜合.png",福州新聞綜合
+https://live.zohi.tv/video/s10001-fztv-1/index.m3u8
+#EXTINF:-1 tvg-name="福州生活" tvg-logo="https://live.fanmingming.com/tv/福州生活.png",福州生活
+https://live.zohi.tv/video/s10001-fztv-3/index.m3u8
+#EXTINF:-1 tvg-name="福州少兒" tvg-logo="https://live.fanmingming.com/tv/福州少兒.png",福州少兒
+https://live.zohi.tv/video/s10001-fztv-4/index.m3u8
+#EXTINF:-1 tvg-name="*云霄综合" tvg-logo="https://live.fanmingming.com/tv/*云霄综合.png",*云霄综合
+https://live.zzyxxw.com:2443/live/xwzh.m3u8
+#EXTINF:-1 tvg-name="贛州新聞綜合" tvg-logo="https://live.fanmingming.com/tv/贛州新聞綜合.png",贛州新聞綜合
+https://pili-live-hls-sjxgz2024.sobeylive.com/jxgz2024/396_q_live172526329228525.m3u8
+#EXTINF:-1 tvg-name="贛州公共" tvg-logo="https://live.fanmingming.com/tv/贛州公共.png",贛州公共
+https://pili-live-hls-sjxgz2024.sobeylive.com/jxgz2024/396_q_live172526334096251.m3u8
+#EXTINF:-1 tvg-name="山東教育衛視" tvg-logo="https://live.fanmingming.com/tv/山東教育衛視.png",山東教育衛視
+https://test1.live.sdetv.com.cn/live/dianshizhibo/playlist.m3u8
+#EXTINF:-1 tvg-name="*十堰經濟旅遊" tvg-logo="https://live.fanmingming.com/tv/*十堰經濟旅遊.png",*十堰經濟旅遊
+https://p8.vzan.com/slowlive/701367497774448672/live.m3u8
+#EXTINF:-1 tvg-name="*衡阳縣電視台" tvg-logo="https://live.fanmingming.com/tv/*衡阳縣電視台.png",*衡阳縣電視台
+https://liveplay-srs.voc.com.cn/hls/tv/183_554704.m3u8
+#EXTINF:-1 tvg-name="廣西南寧新聞綜合" tvg-logo="https://live.fanmingming.com/tv/廣西南寧新聞綜合.png",廣西南寧新聞綜合
+https://hls.nntv.cn/nnlive/XWZH_24.m3u8
+#EXTINF:-1 tvg-name="廣西南寧文旅生活" tvg-logo="https://live.fanmingming.com/tv/廣西南寧文旅生活.png",廣西南寧文旅生活
+https://hls.nntv.cn/nnlive/WLSH_24.m3u8
+#EXTINF:-1 tvg-name="廣西南寧影視娛樂" tvg-logo="https://live.fanmingming.com/tv/廣西南寧影視娛樂.png",廣西南寧影視娛樂
+https://hls.nntv.cn/nnlive/YSYL_24.m3u8
+#EXTINF:-1 tvg-name="廣西南寧公共" tvg-logo="https://live.fanmingming.com/tv/廣西南寧公共.png",廣西南寧公共
+https://hls.nntv.cn/nnlive/GGPD_24.m3u8
+#EXTINF:-1 tvg-name="南寧隆安縣廣播電視台" tvg-logo="https://live.fanmingming.com/tv/南寧隆安縣廣播電視台.png",南寧隆安縣廣播電視台
+https://hls.nntv.cn/nnlive/LATV_24.m3u8
+#EXTINF:-1 tvg-name="廣西南寧老友LIVE" tvg-logo="https://live.fanmingming.com/tv/廣西南寧老友LIVE.png",廣西南寧老友LIVE
+https://hls.nntv.cn/nnlive/LYL1_24.m3u8
+#EXTINF:-1 tvg-name="重慶衛視" tvg-logo="https://live.fanmingming.com/tv/重慶衛視.png",重慶衛視
+https://iptv.catvod.com/live.php?id=%E9%87%8D%E5%BA%86%E5%8D%AB%E8%A7%86
+#EXTINF:-1 tvg-name="廣元綜合" tvg-logo="https://live.fanmingming.com/tv/廣元綜合.png",廣元綜合
+https://m3u8.channel.dzsm.com/nmip-media/channellive/channel100999/playlist.m3u8
+#EXTINF:-1 tvg-name="廣元文化生活" tvg-logo="https://live.fanmingming.com/tv/廣元文化生活.png",廣元文化生活
+https://m3u8.channel.dzsm.com/nmip-media/channellive/channel101257/playlist.m3u8
+#EXTINF:-1 tvg-name="*朝天綜合" tvg-logo="https://live.fanmingming.com/tv/*朝天綜合.png",*朝天綜合
+https://m3u8.channel.dzsm.com/nmip-media/channellive/channel104601/playlist.m3u8
+#EXTINF:-1 tvg-name="*滎經綜合" tvg-logo="https://live.fanmingming.com/tv/*滎經綜合.png",*滎經綜合
+https://m3u8channel-yj.yunxya.com/nmip-media/channellive/channel101140/playlist.m3u8
+#EXTINF:-1 tvg-name="*劍閣綜合" tvg-logo="https://live.fanmingming.com/tv/*劍閣綜合.png",*劍閣綜合
+https://m3u8.channel.dzsm.com/nmip-media/channellive/channel105549/playlist.m3u8
+#EXTINF:-1 tvg-name="*金川雨域" tvg-logo="https://live.fanmingming.com/tv/*金川雨域.png",*金川雨域
+https://m3u8channel-yc.yunxya.com/nmip-media/channellive/channel100103/playlist.m3u8
+#EXTINF:-1 tvg-name="*通海縣電視台" tvg-logo="https://live.fanmingming.com/tv/*通海縣電視台.png",*通海縣電視台
+https://zb-live.ynurl.com/tonghai/3bfe3a9e-48e6-4c1e-8770-1df66447cc6c.m3u8
+#EXTINF:-1 tvg-name="*易門縣電視台" tvg-logo="https://live.fanmingming.com/tv/*易門縣電視台.png",*易門縣電視台
+https://zb-live.ynurl.com/yimen/3b75a2f9-7941-46b7-992d-a9796fbca5fe.m3u8
+#EXTINF:-1 tvg-name="*隴川縣電視台" tvg-logo="https://live.fanmingming.com/tv/*隴川縣電視台.png",*隴川縣電視台
+https://zb-live.ynurl.com/longchuan/58f88df3-605e-4c57-865c-8e8f85241ca1.m3u8
+#EXTINF:-1 tvg-name="*天祝綜合" tvg-logo="https://live.fanmingming.com/tv/*天祝綜合.png",*天祝綜合
+https://play.kankanlive.com/live/1656487214793905.m3u8
+#EXTINF:-1 tvg-name="西寧新聞" tvg-logo="https://live.fanmingming.com/tv/西寧新聞.png",西寧新聞
+https://liveout.xntv.tv/a65jur/96iln2.m3u8
+#EXTINF:-1 tvg-name="西寧生活服務" tvg-logo="https://live.fanmingming.com/tv/西寧生活服務.png",西寧生活服務
+https://liveout.xntv.tv/a65jur/90p2i1.m3u8
+#EXTINF:-1 tvg-name="兵團五師綜合" tvg-logo="https://live.fanmingming.com/tv/兵團五師綜合.png",兵團五師綜合
+https://liveout.btzx.com.cn/62ds9e/4nxdih.m3u8?zxinjd
+#EXTINF:-1 tvg-name="*哈密三套" tvg-logo="https://live.fanmingming.com/tv/*哈密三套.png",*哈密三套
+https://tvpull.hmgbtv.com/hmtv/channelfb0e5c505477aa44/playlist.m3u8
+#EXTINF:-1 tvg-name="Taiwan Plus+" tvg-logo="https://live.fanmingming.com/tv/Taiwan Plus+.png",Taiwan Plus+
+https://bcovlive-a.akamaihd.net/rce33d845cb9e42dfa302c7ac345f7858/ap-northeast-1/6282251407001/playlist.m3u8
+#EXTINF:-1 tvg-name="人間衛視" tvg-logo="https://live.fanmingming.com/tv/人間衛視.png",人間衛視
+https://5ddce30eb4b55.streamlock.net/bltvhd/bltv1/playlist.m3u8
+#EXTINF:-1 tvg-name="好消息綜合台" tvg-logo="https://live.fanmingming.com/tv/好消息綜合台.png",好消息綜合台
+https://live.streamingfast.net/osmflivech1.m3u8
+#EXTINF:-1 tvg-name="好消息真理台" tvg-logo="https://live.fanmingming.com/tv/好消息真理台.png",好消息真理台
+https://live.streamingfast.net/osmflivech2.m3u8
+#EXTINF:-1 tvg-name="佛衛慈悲台" tvg-logo="https://live.fanmingming.com/tv/佛衛慈悲台.png",佛衛慈悲台
+https://btsw-ott2b.cdn.hinet.net/live_bts/btsw01/playlist.m3u8
+#EXTINF:-1 tvg-name="唯心電視台" tvg-logo="https://live.fanmingming.com/tv/唯心電視台.png",唯心電視台
+https://mobile.ccdntech.com/transcoder/_definst_/vod164_Live/live/chunklist_w1177047531.m3u8
+#EXTINF:-1 tvg-name="直播熊貓" tvg-logo="https://live.fanmingming.com/tv/直播熊貓.png",直播熊貓
+https://gcwbndali.v.myalicdn.com/gcwbnd/ipanda1000_2/index.m3u8
+#EXTINF:-1 tvg-name="新唐人美東台" tvg-logo="https://live.fanmingming.com/tv/新唐人美東台.png",新唐人美東台
+https://live.ntdtv.com/live900/playlist.m3u8
+#EXTINF:-1 tvg-name="新唐人美西台" tvg-logo="https://live.fanmingming.com/tv/新唐人美西台.png",新唐人美西台
+https://live.ntdtv.com/uwlive990/playlist.m3u8
+#EXTINF:-1 tvg-name="新唐人加東台" tvg-logo="https://live.fanmingming.com/tv/新唐人加東台.png",新唐人加東台
+https://live.ntdtv.com/mllive860/playlist.m3u8
+#EXTINF:-1 tvg-name="新唐人加西台" tvg-logo="https://live.fanmingming.com/tv/新唐人加西台.png",新唐人加西台
+https://live.ntdtv.com/cwlive220/playlist.m3u8
+#EXTINF:-1 tvg-name="新唐人中國台" tvg-logo="https://live.fanmingming.com/tv/新唐人中國台.png",新唐人中國台
+https://live.ntdtv.com/cnlive900/playlist.m3u8
+#EXTINF:-1 tvg-name="KuriakosKids" tvg-logo="https://live.fanmingming.com/tv/KuriakosKids.png",KuriakosKids
+https://w2.manasat.com/kkids/smil:kkids.smil/playlist.m3u8
+#EXTINF:-1 tvg-name="紅牛運動" tvg-logo="https://live.fanmingming.com/tv/紅牛運動.png",紅牛運動
+https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8
+#EXTINF:-1 tvg-name="亞洲新聞" tvg-logo="https://live.fanmingming.com/tv/亞洲新聞.png",亞洲新聞
+https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_4.m3u8
+#EXTINF:-1 tvg-name="Pet Club TV" tvg-logo="https://live.fanmingming.com/tv/Pet Club TV.png",Pet Club TV
+https://cdn-apse1-prod.tsv2.amagi.tv/linear/amg01076-lightningintern-petclub-samsungnz/playlist.m3u8
+#EXTINF:-1 tvg-name="EWTN" tvg-logo="https://live.fanmingming.com/tv/EWTN.png",EWTN
+https://cdn3.wowza.com/1/QmVNUVhTNTZSS3Uz/YWQ0aHpi/hls/live/playlist.m3u8
+#EXTINF:-1 tvg-name="俄 RT News" tvg-logo="https://live.fanmingming.com/tv/俄 RT News.png",俄 RT News
+https://rt-glb.rttv.com/dvr/rtnews/playlist_4500Kb.m3u8
+#EXTINF:-1 tvg-name="韓 NBS" tvg-logo="https://live.fanmingming.com/tv/韓 NBS.png",韓 NBS
+https://media.joycorp.co.kr:4443/live/live_720p/playlist.m3u8
+#EXTINF:-1 tvg-name="俄 RT Documentary" tvg-logo="https://live.fanmingming.com/tv/俄 RT Documentary.png",俄 RT Documentary
+https://rt-rtd.rttv.com/live/rtdoc/playlist.m3u8
+#EXTINF:-1 tvg-name="ABC News Live" tvg-logo="https://live.fanmingming.com/tv/ABC News Live.png",ABC News Live
+https://d4ybyqrhce41r.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod-xumo-linear-nbcu-hlsv3/master.m3u8?ads.channelId=99991626
+#EXTINF:-1 tvg-name="WionNews" tvg-logo="https://live.fanmingming.com/tv/WionNews.png",WionNews
+https://d7x8z4yuq42qn.cloudfront.net/index_7.m3u8
+#EXTINF:-1 tvg-name="Arirang" tvg-logo="https://live.fanmingming.com/tv/Arirang.png",Arirang
+https://amdlive-ch01-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/chunklist_b3256000_sleng.m3u8
+#EXTINF:-1 tvg-name="RT Español" tvg-logo="https://live.fanmingming.com/tv/RT Español.png",RT Español
+https://rt-esp.rttv.com/dvr/rtesp/playlist_4500Kb.m3u8
+#EXTINF:-1 tvg-name="RT Français" tvg-logo="https://live.fanmingming.com/tv/RT Français.png",RT Français
+https://rt-fra.rttv.com/dvr/rtfrance/playlist_4500Kb.m3u8
+#EXTINF:-1 tvg-name="RT Arabic" tvg-logo="https://live.fanmingming.com/tv/RT Arabic.png",RT Arabic
+https://rt-arb.rttv.com/dvr/rtarab/playlist_4500Kb.m3u8
+#EXTINF:-1 tvg-name="RT DE" tvg-logo="https://live.fanmingming.com/tv/RT DE.png",RT DE
+https://rt-ger.rttv.com/dvr/rtdeutsch/playlist_4500Kb.m3u8
+#EXTINF:-1 tvg-name="RT Balkan" tvg-logo="https://live.fanmingming.com/tv/RT Balkan.png",RT Balkan
+https://rt-srb.rttv.com/dvr/rtbalkan/playlist_4500Kb.m3u8
+#EXTINF:-1 tvg-name="RT Doc-Русский" tvg-logo="https://live.fanmingming.com/tv/RT Doc-Русский.png",RT Doc-Русский
+https://rt-doc.rttv.com/dvr/rtdru/rtdru1080.m3u8
+#EXTINF:-1 tvg-name="Wild Earth" tvg-logo="https://live.fanmingming.com/tv/Wild Earth.png",Wild Earth
+https://wildearth-plex.amagi.tv/masterR1080p.m3u8
