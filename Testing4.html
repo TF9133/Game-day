@@ -32,8 +32,7 @@
                     <h5 class="mb-0">📥 來源輸入</h5>
                 </div>
                 <div class="card-body">
-                    
-                    <label class="form-label fw-bold">方式 A：從網址載入 (支援 GitHub/遠端文件)</label>
+                    <label class="form-label fw-bold">方式 A：從網址載入</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text">🔗 URL</span>
                         <input type="text" id="remoteUrlInput" class="form-control" placeholder="例如：https://raw.githubusercontent.com/.../list.m3u">
@@ -66,12 +65,8 @@
                     </div>
                     
                     <div class="btn-group">
-                        <button class="btn btn-success btn-sm" onclick="downloadValidM3U()">
-                            📥 下載可用清單 (.m3u)
-                        </button>
-                        <button class="btn btn-outline-dark btn-sm" onclick="copyValidUrls()">
-                            📋 複製可用連結
-                        </button>
+                        <button class="btn btn-success btn-sm" onclick="downloadValidM3U()">📥 下載可用清單</button>
+                        <button class="btn btn-outline-dark btn-sm" onclick="copyValidUrls()">📋 複製連結</button>
                     </div>
                 </div>
                 <div class="progress mb-3" style="height: 20px;">
@@ -82,7 +77,9 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
                     <span>檢測結果列表</span>
-                    <small class="text-muted">提示: 紅色可能為 CORS 誤判，請點播放確認</small>
+                    <button id="filterBtn" class="btn btn-outline-primary btn-sm" onclick="toggleFilter()">
+                        👁️ 只顯示可用頻道
+                    </button>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -98,8 +95,7 @@
                             <tbody id="resultBody">
                                 <tr>
                                     <td colspan="4" class="text-center py-5 text-muted">
-                                        請輸入直播源並按下開始按鈕<br>
-                                        <small>系統將自動過濾並測試連結有效性</small>
+                                        請輸入直播源並按下開始按鈕
                                     </td>
                                 </tr>
                             </tbody>
@@ -133,41 +129,74 @@
     let channels = [];
     let processing = false;
     let abortController = null;
+    let isFiltered = false; // 追蹤目前是否處於篩選狀態
 
-    // --- 1. 載入功能 ---
+    // --- 篩選按鈕邏輯 (新增) ---
+    function toggleFilter() {
+        const btn = document.getElementById('filterBtn');
+        isFiltered = !isFiltered; // 切換狀態
 
-    // 從網址載入 (使用 AllOrigins 解決 CORS)
+        if (isFiltered) {
+            // 切換為：只顯示可用
+            btn.innerHTML = '📋 顯示全部頻道';
+            btn.classList.replace('btn-outline-primary', 'btn-primary');
+            
+            // 遍歷所有行，隱藏非 success 的行
+            channels.forEach((ch, index) => {
+                const row = document.getElementById(`row-${index}`);
+                if (row) {
+                    if (ch.status === 'success') {
+                        row.style.display = ''; // 顯示
+                    } else {
+                        row.style.display = 'none'; // 隱藏
+                    }
+                }
+            });
+
+            // 如果沒有可用頻道，提示一下
+            const successCount = channels.filter(c => c.status === 'success').length;
+            if (successCount === 0) {
+                alert('目前沒有檢測到「可用」的頻道，列表已清空顯示。');
+            }
+
+        } else {
+            // 切換為：顯示全部
+            btn.innerHTML = '👁️ 只顯示可用頻道';
+            btn.classList.replace('btn-primary', 'btn-outline-primary');
+
+            // 顯示所有行
+            const rows = document.querySelectorAll('#resultBody tr');
+            rows.forEach(row => row.style.display = '');
+        }
+    }
+
+    // --- 其他原有功能 ---
+
     async function loadFromUrl() {
         const url = document.getElementById('remoteUrlInput').value.trim();
         if (!url) { alert('請輸入網址'); return; }
 
         showLoading(true, '正在下載遠端文件...');
-
         try {
-            // 使用 AllOrigins 代理請求，繞過 CORS 限制
             const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
             const response = await fetch(proxyUrl);
-            
             if (!response.ok) throw new Error('網絡請求失敗');
             
             const text = await response.text();
             document.getElementById('m3uInput').value = text;
             showLoading(false);
             
-            // 自動開始解析
             setTimeout(() => {
                 if(confirm('載入成功！是否立即開始解析與檢測？')) {
                     processM3U();
                 }
             }, 100);
-
         } catch (error) {
             showLoading(false);
-            alert('載入失敗：無法讀取該網址。\n請檢查網址是否正確，或者該伺服器拒絕了代理訪問。\n錯誤訊息: ' + error.message);
+            alert('載入失敗：' + error.message);
         }
     }
 
-    // 從文件載入
     document.getElementById('fileInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -178,19 +207,20 @@
         reader.readAsText(file);
     });
 
-    // --- 2. 解析與檢測核心 ---
-
     function processM3U() {
         if (processing) return;
-        
-        // 停止之前的請求
         if (abortController) abortController.abort();
         abortController = new AbortController();
 
-        const content = document.getElementById('m3uInput').value;
-        if (!content.trim()) { alert('內容為空，請輸入或載入 M3U'); return; }
+        // 重置篩選狀態
+        isFiltered = false;
+        const filterBtn = document.getElementById('filterBtn');
+        filterBtn.innerHTML = '👁️ 只顯示可用頻道';
+        filterBtn.classList.replace('btn-primary', 'btn-outline-primary');
 
-        // 解析邏輯
+        const content = document.getElementById('m3uInput').value;
+        if (!content.trim()) { alert('請輸入內容'); return; }
+
         const lines = content.split('\n');
         channels = [];
         let currentName = "未命名頻道";
@@ -205,15 +235,14 @@
                     id: channels.length,
                     name: currentName,
                     url: line,
-                    status: 'pending' // pending, success, fail
+                    status: 'pending'
                 });
                 currentName = "未命名頻道"; 
             }
         }
 
-        if (channels.length === 0) { alert('未識別到有效的連結'); return; }
+        if (channels.length === 0) { alert('無有效連結'); return; }
 
-        // 初始化介面
         document.getElementById('actionPanel').classList.remove('d-none');
         renderTable();
         startChecking();
@@ -224,9 +253,7 @@
         tbody.innerHTML = '';
         updateStats();
 
-        // 為了效能，如果數量太多(超過500)，可以考慮分頁，這裡暫時全部渲染但使用簡單DOM操作
         const fragment = document.createDocumentFragment();
-        
         channels.forEach((ch, index) => {
             const tr = document.createElement('tr');
             tr.id = `row-${index}`;
@@ -249,41 +276,43 @@
 
     async function startChecking() {
         processing = true;
-        const batchSize = 10; // 併發數
+        const batchSize = 10;
         let completed = 0;
-
         updateProgressBar(0);
 
         for (let i = 0; i < channels.length; i += batchSize) {
-            if (!processing) break; // 允許中斷
-
+            if (!processing) break;
             const batch = channels.slice(i, i + batchSize);
             await Promise.all(batch.map(ch => checkUrl(ch)));
-            
             completed += batch.length;
             updateStats();
             updateProgressBar(Math.round((completed / channels.length) * 100));
+            
+            // 如果在檢測過程中開啟了篩選，實時更新顯示
+            if(isFiltered) {
+                batch.forEach(ch => {
+                    const row = document.getElementById(`row-${ch.id}`);
+                    if(row && ch.status !== 'success') row.style.display = 'none';
+                });
+            }
         }
         processing = false;
     }
 
     async function checkUrl(channel) {
         const badge = document.getElementById(`badge-${channel.id}`);
-        if(!badge) return; // 防止DOM已清除
-
+        if(!badge) return;
         badge.className = 'badge bg-warning text-dark status-badge me-2';
         badge.innerText = '...';
 
         try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 6000); // 6秒超時
-
+            const timeoutId = setTimeout(() => controller.abort(), 6000);
             const response = await fetch(channel.url, {
-                method: 'GET', // GET 比 HEAD 更準確一點，雖然慢
+                method: 'GET',
                 signal: controller.signal,
-                referrerPolicy: 'no-referrer' // 減少 Referer 阻擋
+                referrerPolicy: 'no-referrer'
             });
-            
             clearTimeout(timeoutId);
 
             if (response.ok) {
@@ -300,52 +329,27 @@
         }
     }
 
-    // --- 3. 匯出與篩選功能 ---
-
-    function getValidChannels() {
-        // 過濾出狀態為 success 的頻道
-        return channels.filter(c => c.status === 'success');
-    }
-
     function downloadValidM3U() {
-        const validList = getValidChannels();
-        if (validList.length === 0) {
-            alert('目前沒有檢測到「可用(綠色)」的頻道，無法導出。');
-            return;
-        }
-
+        const validList = channels.filter(c => c.status === 'success');
+        if (validList.length === 0) { alert('無可用頻道'); return; }
         let content = "#EXTM3U\n";
-        validList.forEach(c => {
-            content += `#EXTINF:-1,${c.name}\n${c.url}\n`;
-        });
-
+        validList.forEach(c => content += `#EXTINF:-1,${c.name}\n${c.url}\n`);
         const blob = new Blob([content], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'valid_channels_' + new Date().toISOString().slice(0,10) + '.m3u';
-        document.body.appendChild(a);
+        a.download = 'valid_channels.m3u';
         a.click();
-        document.body.removeChild(a);
         URL.revokeObjectURL(url);
     }
 
     function copyValidUrls() {
-        const validList = getValidChannels();
-        if (validList.length === 0) {
-            alert('無可用頻道');
-            return;
-        }
+        const validList = channels.filter(c => c.status === 'success');
+        if (validList.length === 0) { alert('無可用頻道'); return; }
         let content = "";
-        validList.forEach(c => {
-            content += `${c.name},${c.url}\n`;
-        });
-        navigator.clipboard.writeText(content).then(() => {
-            alert(`已複製 ${validList.length} 個可用頻道到剪貼簿！`);
-        });
+        validList.forEach(c => content += `${c.name},${c.url}\n`);
+        navigator.clipboard.writeText(content).then(() => alert(`已複製 ${validList.length} 個頻道！`));
     }
-
-    // --- 4. 輔助與播放功能 ---
 
     function updateStats() {
         document.getElementById('totalCount').innerText = channels.length;
@@ -375,25 +379,24 @@
         document.getElementById('resultBody').innerHTML = '<tr><td colspan="4" class="text-center py-5 text-muted">已清空</td></tr>';
         document.getElementById('actionPanel').classList.add('d-none');
         channels = [];
+        // 重置篩選按鈕
+        isFiltered = false;
+        document.getElementById('filterBtn').innerHTML = '👁️ 只顯示可用頻道';
+        document.getElementById('filterBtn').classList.replace('btn-primary', 'btn-outline-primary');
     }
 
     function showLoading(show, text) {
         const el = document.getElementById('loadingOverlay');
         document.getElementById('loadingText').innerText = text || '處理中...';
-        if(show) el.classList.remove('d-none');
-        else el.classList.add('d-none');
+        show ? el.classList.remove('d-none') : el.classList.add('d-none');
     }
 
-    // 播放器邏輯
     let hls = null;
     function playChannel(index) {
         const channel = channels[index];
         const video = document.getElementById('videoPlayer');
-        const modalTitle = document.getElementById('modalTitle');
-        
-        modalTitle.innerText = `📺 ${channel.name}`;
-        const modal = new bootstrap.Modal(document.getElementById('videoModal'));
-        modal.show();
+        document.getElementById('modalTitle').innerText = `📺 ${channel.name}`;
+        new bootstrap.Modal(document.getElementById('videoModal')).show();
 
         if (Hls.isSupported()) {
             if (hls) hls.destroy();
@@ -413,10 +416,8 @@
         video.src = "";
         if (hls) { hls.destroy(); hls = null; }
     }
-    
     document.getElementById('videoModal').addEventListener('hidden.bs.modal', stopVideo);
-
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-    </html>
+</html>
