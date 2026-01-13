@@ -3,51 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M3U8 直播源檢測工具</title>
+    <title>M3U8 直播源檢測與篩選工具 Pro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
-        body { background-color: #f8f9fa; padding-top: 20px; }
+        body { background-color: #f8f9fa; padding-top: 20px; padding-bottom: 50px; }
         .status-badge { width: 80px; text-align: center; }
-        .url-text { font-size: 0.85em; color: #666; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; vertical-align: middle;}
+        .url-text { font-size: 0.85em; color: #666; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; vertical-align: middle;}
         #videoModal .modal-body { padding: 0; background: black; }
-        video { width: 100%; height: auto; display: block; }
+        video { width: 100%; height: auto; display: block; max-height: 80vh; }
+        .loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:9999; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; }
     </style>
 </head>
 <body>
 
+<div id="loadingOverlay" class="loading-overlay d-none">
+    <div class="spinner-border text-primary me-2" role="status"></div>
+    <span id="loadingText">處理中...</span>
+</div>
+
 <div class="container mb-5">
     <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <h2 class="text-center mb-4">📺 M3U8 直播源檢測與播放工具</h2>
+        <div class="col-lg-11">
+            <h2 class="text-center mb-4">📺 M3U8 直播源檢測與篩選工具 Pro</h2>
 
             <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">📥 來源輸入</h5>
+                </div>
                 <div class="card-body">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">1. 輸入 M3U 內容 或 上傳文件</label>
-                        <textarea id="m3uInput" class="form-control" rows="5" placeholder="#EXTM3U&#10;#EXTINF:-1,CCTV-1&#10;http://example.com/live.m3u8"></textarea>
+                    
+                    <label class="form-label fw-bold">方式 A：從網址載入 (支援 GitHub/遠端文件)</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">🔗 URL</span>
+                        <input type="text" id="remoteUrlInput" class="form-control" placeholder="例如：https://raw.githubusercontent.com/.../list.m3u">
+                        <button class="btn btn-info text-white" onclick="loadFromUrl()">⬇️ 載入內容</button>
                     </div>
+
+                    <hr class="my-3">
+
+                    <label class="form-label fw-bold">方式 B：貼上內容 或 上傳文件</label>
+                    <textarea id="m3uInput" class="form-control mb-3" rows="5" placeholder="#EXTM3U&#10;#EXTINF:-1,CCTV-1&#10;http://example.com/live.m3u8"></textarea>
+                    
                     <div class="row g-2">
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <input type="file" id="fileInput" class="form-control" accept=".m3u,.m3u8,.txt">
                         </div>
-                        <div class="col-md-6 text-end">
-                            <button class="btn btn-primary px-4" onclick="processM3U()">🚀 開始解析與檢測</button>
-                            <button class="btn btn-secondary" onclick="clearAll()">清除</button>
+                        <div class="col-md-7 text-end">
+                            <button class="btn btn-secondary me-1" onclick="clearAll()">🧹 清除重置</button>
+                            <button class="btn btn-primary px-4" onclick="processM3U()">🚀 解析並開始檢測</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="statsBar" class="alert alert-info d-none d-flex justify-content-between align-items-center">
-                <span>總數: <strong id="totalCount">0</strong></span>
-                <span class="text-success">可用: <strong id="successCount">0</strong></span>
-                <span class="text-danger">失敗/CORS: <strong id="failCount">0</strong></span>
-                <span>進度: <span id="progressText">0%</span></span>
+            <div id="actionPanel" class="d-none">
+                <div class="alert alert-secondary d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div id="statsInfo">
+                        總數: <strong id="totalCount">0</strong> | 
+                        <span class="text-success">可用: <strong id="successCount">0</strong></span> | 
+                        <span class="text-danger">失敗: <strong id="failCount">0</strong></span>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn btn-success btn-sm" onclick="downloadValidM3U()">
+                            📥 下載可用清單 (.m3u)
+                        </button>
+                        <button class="btn btn-outline-dark btn-sm" onclick="copyValidUrls()">
+                            📋 複製可用連結
+                        </button>
+                    </div>
+                </div>
+                <div class="progress mb-3" style="height: 20px;">
+                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%">0%</div>
+                </div>
             </div>
 
             <div class="card shadow-sm">
-                <div class="card-header bg-white fw-bold">檢測結果列表</div>
+                <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+                    <span>檢測結果列表</span>
+                    <small class="text-muted">提示: 紅色可能為 CORS 誤判，請點播放確認</small>
+                </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover table-striped align-middle mb-0">
@@ -56,12 +92,15 @@
                                     <th style="width: 50px;">#</th>
                                     <th>頻道名稱</th>
                                     <th>連結 / 狀態</th>
-                                    <th style="width: 150px;">操作</th>
+                                    <th style="width: 160px;">操作</th>
                                 </tr>
                             </thead>
                             <tbody id="resultBody">
                                 <tr>
-                                    <td colspan="4" class="text-center py-4 text-muted">請輸入直播源並按下開始按鈕</td>
+                                    <td colspan="4" class="text-center py-5 text-muted">
+                                        請輸入直播源並按下開始按鈕<br>
+                                        <small>系統將自動過濾並測試連結有效性</small>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -82,6 +121,10 @@
             <div class="modal-body">
                 <video id="videoPlayer" controls></video>
             </div>
+            <div class="modal-footer justify-content-between">
+                <small class="text-muted">若畫面黑屏但有聲音或進度條，代表源有效。</small>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" onclick="stopVideo()">關閉</button>
+            </div>
         </div>
     </div>
 </div>
@@ -89,8 +132,42 @@
 <script>
     let channels = [];
     let processing = false;
+    let abortController = null;
 
-    // 讀取文件
+    // --- 1. 載入功能 ---
+
+    // 從網址載入 (使用 AllOrigins 解決 CORS)
+    async function loadFromUrl() {
+        const url = document.getElementById('remoteUrlInput').value.trim();
+        if (!url) { alert('請輸入網址'); return; }
+
+        showLoading(true, '正在下載遠端文件...');
+
+        try {
+            // 使用 AllOrigins 代理請求，繞過 CORS 限制
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+            const response = await fetch(proxyUrl);
+            
+            if (!response.ok) throw new Error('網絡請求失敗');
+            
+            const text = await response.text();
+            document.getElementById('m3uInput').value = text;
+            showLoading(false);
+            
+            // 自動開始解析
+            setTimeout(() => {
+                if(confirm('載入成功！是否立即開始解析與檢測？')) {
+                    processM3U();
+                }
+            }, 100);
+
+        } catch (error) {
+            showLoading(false);
+            alert('載入失敗：無法讀取該網址。\n請檢查網址是否正確，或者該伺服器拒絕了代理訪問。\n錯誤訊息: ' + error.message);
+        }
+    }
+
+    // 從文件載入
     document.getElementById('fileInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -101,32 +178,26 @@
         reader.readAsText(file);
     });
 
-    function clearAll() {
-        document.getElementById('m3uInput').value = '';
-        document.getElementById('fileInput').value = '';
-        document.getElementById('resultBody').innerHTML = '<tr><td colspan="4" class="text-center py-4 text-muted">已清空</td></tr>';
-        document.getElementById('statsBar').classList.add('d-none');
-        channels = [];
-    }
+    // --- 2. 解析與檢測核心 ---
 
-    // 解析 M3U 內容
     function processM3U() {
         if (processing) return;
-        const content = document.getElementById('m3uInput').value;
-        if (!content.trim()) {
-            alert('請輸入或上傳 M3U 內容');
-            return;
-        }
+        
+        // 停止之前的請求
+        if (abortController) abortController.abort();
+        abortController = new AbortController();
 
+        const content = document.getElementById('m3uInput').value;
+        if (!content.trim()) { alert('內容為空，請輸入或載入 M3U'); return; }
+
+        // 解析邏輯
         const lines = content.split('\n');
         channels = [];
         let currentName = "未命名頻道";
         
-        // 簡單的解析邏輯
         for (let line of lines) {
             line = line.trim();
             if (line.startsWith('#EXTINF')) {
-                // 嘗試提取頻道名稱 (逗號後面的部分)
                 const parts = line.split(',');
                 currentName = parts.length > 1 ? parts[parts.length - 1].trim() : "未知頻道";
             } else if (line.startsWith('http') || (line.endsWith('.m3u8') && !line.startsWith('#'))) {
@@ -136,93 +207,81 @@
                     url: line,
                     status: 'pending' // pending, success, fail
                 });
-                // 重置名稱，防止下一個網址沒有 EXTINF 時沿用舊名稱
                 currentName = "未命名頻道"; 
             }
         }
 
-        if (channels.length === 0) {
-            alert('未能識別出有效的直播源鏈接 (http...)');
-            return;
-        }
+        if (channels.length === 0) { alert('未識別到有效的連結'); return; }
 
+        // 初始化介面
+        document.getElementById('actionPanel').classList.remove('d-none');
         renderTable();
         startChecking();
     }
 
-    // 渲染表格
     function renderTable() {
         const tbody = document.getElementById('resultBody');
         tbody.innerHTML = '';
-        
-        document.getElementById('statsBar').classList.remove('d-none');
         updateStats();
 
+        // 為了效能，如果數量太多(超過500)，可以考慮分頁，這裡暫時全部渲染但使用簡單DOM操作
+        const fragment = document.createDocumentFragment();
+        
         channels.forEach((ch, index) => {
             const tr = document.createElement('tr');
             tr.id = `row-${index}`;
             tr.innerHTML = `
                 <td>${index + 1}</td>
-                <td class="fw-bold text-primary">${ch.name}</td>
+                <td class="fw-bold text-primary text-truncate" style="max-width: 200px;">${ch.name}</td>
                 <td>
                     <span id="badge-${index}" class="badge bg-secondary status-badge me-2">待檢測</span>
                     <span class="url-text" title="${ch.url}">${ch.url}</span>
                 </td>
                 <td>
-                    <button class="btn btn-sm btn-success" onclick="playChannel(${index})">
-                        ▶ 播放
-                    </button>
-                    <a href="${ch.url}" target="_blank" class="btn btn-sm btn-outline-secondary">
-                        🔗 直連
-                    </a>
+                    <button class="btn btn-sm btn-success mb-1" onclick="playChannel(${index})">▶ 播放</button>
+                    <a href="${ch.url}" target="_blank" class="btn btn-sm btn-outline-secondary mb-1">🔗 直連</a>
                 </td>
             `;
-            tbody.appendChild(tr);
+            fragment.appendChild(tr);
         });
+        tbody.appendChild(fragment);
     }
 
-    // 更新統計數據
-    function updateStats() {
-        document.getElementById('totalCount').innerText = channels.length;
-        document.getElementById('successCount').innerText = channels.filter(c => c.status === 'success').length;
-        document.getElementById('failCount').innerText = channels.filter(c => c.status === 'fail').length;
-        
-        const checked = channels.filter(c => c.status !== 'pending').length;
-        const percent = Math.round((checked / channels.length) * 100);
-        document.getElementById('progressText').innerText = percent + "%";
-    }
-
-    // 批量檢測 (使用 fetch HEAD 方法)
     async function startChecking() {
         processing = true;
-        // 限制併發數，以免瀏覽器卡死，這裡設為一次 5 個
-        const batchSize = 5; 
-        
+        const batchSize = 10; // 併發數
+        let completed = 0;
+
+        updateProgressBar(0);
+
         for (let i = 0; i < channels.length; i += batchSize) {
+            if (!processing) break; // 允許中斷
+
             const batch = channels.slice(i, i + batchSize);
             await Promise.all(batch.map(ch => checkUrl(ch)));
+            
+            completed += batch.length;
             updateStats();
+            updateProgressBar(Math.round((completed / channels.length) * 100));
         }
         processing = false;
-        alert('檢測完成！注意：顯示紅色的項目可能僅因跨域(CORS)限制無法檢測，請嘗試點擊「播放」確認。');
     }
 
-    // 單個 URL 檢測邏輯
     async function checkUrl(channel) {
         const badge = document.getElementById(`badge-${channel.id}`);
+        if(!badge) return; // 防止DOM已清除
+
         badge.className = 'badge bg-warning text-dark status-badge me-2';
-        badge.innerText = '檢測中...';
+        badge.innerText = '...';
 
         try {
-            // 使用 fetch 嘗試發送 HEAD 請求
-            // 注意：大多數直播流都有 CORS 保護，這一步很容易失敗
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5000); // 5秒超時
+            const timeoutId = setTimeout(() => controller.abort(), 6000); // 6秒超時
 
             const response = await fetch(channel.url, {
-                method: 'GET', // 部分服務器不支援 HEAD，改用 GET 讀取少量數據
+                method: 'GET', // GET 比 HEAD 更準確一點，雖然慢
                 signal: controller.signal,
-                mode: 'cors' // 嘗試跨域
+                referrerPolicy: 'no-referrer' // 減少 Referer 阻擋
             });
             
             clearTimeout(timeoutId);
@@ -232,72 +291,132 @@
                 badge.className = 'badge bg-success status-badge me-2';
                 badge.innerText = '可用';
             } else {
-                throw new Error('Status not OK');
+                throw new Error('Status: ' + response.status);
             }
         } catch (error) {
-            // 失敗或 CORS 錯誤
             channel.status = 'fail';
             badge.className = 'badge bg-danger status-badge me-2';
-            badge.innerText = '失敗/CORS';
+            badge.innerText = '失敗';
         }
     }
 
-    // 播放功能
+    // --- 3. 匯出與篩選功能 ---
+
+    function getValidChannels() {
+        // 過濾出狀態為 success 的頻道
+        return channels.filter(c => c.status === 'success');
+    }
+
+    function downloadValidM3U() {
+        const validList = getValidChannels();
+        if (validList.length === 0) {
+            alert('目前沒有檢測到「可用(綠色)」的頻道，無法導出。');
+            return;
+        }
+
+        let content = "#EXTM3U\n";
+        validList.forEach(c => {
+            content += `#EXTINF:-1,${c.name}\n${c.url}\n`;
+        });
+
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'valid_channels_' + new Date().toISOString().slice(0,10) + '.m3u';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function copyValidUrls() {
+        const validList = getValidChannels();
+        if (validList.length === 0) {
+            alert('無可用頻道');
+            return;
+        }
+        let content = "";
+        validList.forEach(c => {
+            content += `${c.name},${c.url}\n`;
+        });
+        navigator.clipboard.writeText(content).then(() => {
+            alert(`已複製 ${validList.length} 個可用頻道到剪貼簿！`);
+        });
+    }
+
+    // --- 4. 輔助與播放功能 ---
+
+    function updateStats() {
+        document.getElementById('totalCount').innerText = channels.length;
+        document.getElementById('successCount').innerText = channels.filter(c => c.status === 'success').length;
+        document.getElementById('failCount').innerText = channels.filter(c => c.status === 'fail').length;
+    }
+
+    function updateProgressBar(percent) {
+        const bar = document.getElementById('progressBar');
+        bar.style.width = percent + '%';
+        bar.innerText = percent + '%';
+        if(percent === 100) {
+            bar.classList.remove('progress-bar-animated');
+            bar.classList.add('bg-success');
+        } else {
+            bar.classList.add('progress-bar-animated');
+            bar.classList.remove('bg-success');
+        }
+    }
+
+    function clearAll() {
+        processing = false;
+        if (abortController) abortController.abort();
+        document.getElementById('m3uInput').value = '';
+        document.getElementById('remoteUrlInput').value = '';
+        document.getElementById('fileInput').value = '';
+        document.getElementById('resultBody').innerHTML = '<tr><td colspan="4" class="text-center py-5 text-muted">已清空</td></tr>';
+        document.getElementById('actionPanel').classList.add('d-none');
+        channels = [];
+    }
+
+    function showLoading(show, text) {
+        const el = document.getElementById('loadingOverlay');
+        document.getElementById('loadingText').innerText = text || '處理中...';
+        if(show) el.classList.remove('d-none');
+        else el.classList.add('d-none');
+    }
+
+    // 播放器邏輯
     let hls = null;
     function playChannel(index) {
         const channel = channels[index];
         const video = document.getElementById('videoPlayer');
         const modalTitle = document.getElementById('modalTitle');
         
-        modalTitle.innerText = `播放中: ${channel.name}`;
-        
-        // 顯示 Modal
+        modalTitle.innerText = `📺 ${channel.name}`;
         const modal = new bootstrap.Modal(document.getElementById('videoModal'));
         modal.show();
 
         if (Hls.isSupported()) {
-            if (hls) {
-                hls.destroy();
-            }
+            if (hls) hls.destroy();
             hls = new Hls();
             hls.loadSource(channel.url);
             hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                video.play();
-            });
-            // 處理播放錯誤
-            hls.on(Hls.Events.ERROR, function (event, data) {
-                 if (data.fatal) {
-                    console.error("播放錯誤:", data);
-                    // alert("播放失敗，該源可能無效或無法跨域播放");
-                 }
-            });
+            hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            // Safari 原生支援
             video.src = channel.url;
-            video.addEventListener('loadedmetadata', function() {
-                video.play();
-            });
+            video.addEventListener('loadedmetadata', () => video.play());
         }
     }
 
-    // 關閉 Modal 時停止播放
     function stopVideo() {
         const video = document.getElementById('videoPlayer');
         video.pause();
         video.src = "";
-        if (hls) {
-            hls.destroy();
-            hls = null;
-        }
+        if (hls) { hls.destroy(); hls = null; }
     }
+    
+    document.getElementById('videoModal').addEventListener('hidden.bs.modal', stopVideo);
 
-    // 監聽 Modal 關閉事件 (包括點擊背景關閉)
-    document.getElementById('videoModal').addEventListener('hidden.bs.modal', function () {
-        stopVideo();
-    });
 </script>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+    </html>
