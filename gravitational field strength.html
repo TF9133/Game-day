@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravitational Field Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .cursor-grab { cursor: grab; }
+        .cursor-grabbing { cursor: grabbing !important; }
+        .touch-none { touch-action: none; }
+        .select-none { user-select: none; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen font-sans flex flex-col items-center p-6">
+    <div class="w-full max-w-6xl">
+        <h1 class="text-3xl font-bold mb-2 text-slate-800">Gravitational Field Simulation</h1>
+        <p class="text-slate-600 mb-6">Drag the test masses to see the gravitational force vectors change. The green circles represent equipotential lines with their corresponding gravitational field strength (g).</p>
+
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Controls Panel -->
+            <div class="w-full md:w-80 flex flex-col gap-4">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                    <h2 class="text-lg font-semibold text-slate-800 mb-4">Controls & Measurements</h2>
+
+                    <!-- Mass 1 Controls -->
+                    <div class="mb-6 p-4 bg-orange-50 rounded-lg border border-orange-100">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-orange-800">Test Mass 1 (Orange)</h3>
+                            <button id="btn-toggle-1" class="text-xs px-3 py-1 bg-orange-200 text-orange-800 rounded-md hover:bg-orange-300 transition-colors font-semibold">Hide</button>
+                        </div>
+                        <div id="mass1-controls">
+                            <label class="flex flex-col gap-2 font-medium text-slate-700 mb-3">
+                                <div class="flex justify-between">
+                                    <span>Mass (m₁)</span>
+                                    <span class="text-orange-600 font-bold" id="m1-val">10 kg</span>
+                                </div>
+                                <input type="range" min="1" max="50" value="10" id="m1-slider" class="w-full accent-orange-600">
+                            </label>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-600">Distance (r₁)</span>
+                                    <span class="font-mono font-medium" id="r1-val">0.0 m</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-600">Field (g₁)</span>
+                                    <span class="font-mono font-medium" id="g1-val">0.00 N/kg</span>
+                                </div>
+                                <div class="flex justify-between font-medium text-orange-800">
+                                    <span>Force (F₁)</span>
+                                    <span class="font-mono" id="f1-val">0.0 N</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mass 2 Controls -->
+                    <div class="mb-2 p-4 bg-purple-50 rounded-lg border border-purple-100">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-purple-800">Test Mass 2 (Purple)</h3>
+                            <button id="btn-toggle-2" class="text-xs px-3 py-1 bg-purple-200 text-purple-800 rounded-md hover:bg-purple-300 transition-colors font-semibold">Hide</button>
+                        </div>
+                        <div id="mass2-controls">
+                            <label class="flex flex-col gap-2 font-medium text-slate-700 mb-3">
+                                <div class="flex justify-between">
+                                    <span>Mass (m₂)</span>
+                                    <span class="text-purple-600 font-bold" id="m2-val">15 kg</span>
+                                </div>
+                                <input type="range" min="1" max="50" value="15" id="m2-slider" class="w-full accent-purple-600">
+                            </label>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-600">Distance (r₂)</span>
+                                    <span class="font-mono font-medium" id="r2-val">0.0 m</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-600">Field (g₂)</span>
+                                    <span class="font-mono font-medium" id="g2-val">0.00 N/kg</span>
+                                </div>
+                                <div class="flex justify-between font-medium text-purple-800">
+                                    <span>Force (F₂)</span>
+                                    <span class="font-mono" id="f2-val">0.0 N</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 text-sm text-slate-600">
+                    <p><strong>Formula:</strong> F = G * M * m / r²</p>
+                    <p class="mt-2">The force vectors (blue arrows) point towards the central mass. Their length is proportional to the force magnitude.</p>
+                </div>
+            </div>
+
+            <!-- Simulation Canvas -->
+            <div class="flex-1 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex justify-center items-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+                <svg id="sim-svg" viewBox="0 0 800 600" class="w-full h-auto max-h-[700px] touch-none select-none">
+                    <defs>
+                        <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                            <polygon points="0 0, 8 3, 0 6" fill="#64748b" />
+                        </marker>
+                        <marker id="arrowhead-force" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6" />
+                        </marker>
+                    </defs>
+
+                    <!-- Static Elements Group -->
+                    <g id="static-svg-group"></g>
+
+                    <!-- Dynamic Elements -->
+                    <line id="force1-line" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrowhead-force)" />
+                    <line id="force2-line" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrowhead-force)" />
+
+                    <circle id="mass1-circle" fill="#f97316" stroke="#c2410c" stroke-width="2" class="cursor-grab hover:brightness-110 transition-all" />
+                    <circle id="mass2-circle" fill="#a855f7" stroke="#7e22ce" stroke-width="2" class="cursor-grab hover:brightness-110 transition-all" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let state = {
+            m1: 10, pos1: {x: 500, y: 200}, dragging1: false, show1: true,
+            m2: 15, pos2: {x: 300, y: 600}, dragging2: false, show2: true
+        };
+        const G = 5000;
+        const M = 100;
+        const cx = 200;
+        const cy = 450;
+
+        // DOM Elements
+        const svg = document.getElementById('sim-svg');
+        const staticGroup = document.getElementById('static-svg-group');
+        
+        const btn1 = document.getElementById('btn-toggle-1');
+        const controls1 = document.getElementById('mass1-controls');
+        const m1Slider = document.getElementById('m1-slider');
+        const m1Val = document.getElementById('m1-val');
+        const r1Val = document.getElementById('r1-val');
+        const g1Val = document.getElementById('g1-val');
+        const f1Val = document.getElementById('f1-val');
+        const m1Circle = document.getElementById('mass1-circle');
+        const f1Line = document.getElementById('force1-line');
+
+        const btn2 = document.getElementById('btn-toggle-2');
+        const controls2 = document.getElementById('mass2-controls');
+        const m2Slider = document.getElementById('m2-slider');
+        const m2Val = document.getElementById('m2-val');
+        const r2Val = document.getElementById('r2-val');
+        const g2Val = document.getElementById('g2-val');
+        const f2Val = document.getElementById('f2-val');
+        const m2Circle = document.getElementById('mass2-circle');
+        const f2Line = document.getElementById('force2-line');
+
+        function initStaticSVG() {
+            let html = '';
+
+            // Equipotential Circles
+            const radii = [40, 60, 90, 140, 220, 350, 550, 850];
+            html += '<g stroke="#bbf7d0" stroke-width="1.5" fill="none">';
+            radii.forEach(radius => {
+                const gValue = (G * M) / (radius * radius);
+                const textAngle = -Math.PI / 6;
+                const tx = cx + radius * Math.cos(textAngle);
+                const ty = cy + radius * Math.sin(textAngle);
+
+                html += `
+                    <circle cx="${cx}" cy="${cy}" r="${radius}" />
+                    <rect x="${tx - 24}" y="${ty - 10}" width="48" height="20" fill="white" opacity="0.8" stroke="none" rx="4" />
+                    <text x="${tx}" y="${ty}" fill="#166534" font-size="11" font-weight="600" text-anchor="middle" dominant-baseline="middle" stroke="none">g=${gValue.toFixed(1)}</text>
+                `;
+            });
+            html += '</g>';
+
+            // Field Lines
+            html += '<g stroke="#94a3b8" stroke-width="1.5" opacity="0.8">';
+            for (let i = 0; i < 16; i++) {
+                const angle = (i * Math.PI) / 8;
+                const endX = cx + 1200 * Math.cos(angle);
+                const endY = cy + 1200 * Math.sin(angle);
+
+                html += `<line x1="${cx}" y1="${cy}" x2="${endX}" y2="${endY}" />`;
+
+                [150, 350, 550, 750, 950].forEach(ar => {
+                    const x1 = cx + (ar + 1) * Math.cos(angle);
+                    const y1 = cy + (ar + 1) * Math.sin(angle);
+                    const x2 = cx + ar * Math.cos(angle);
+                    const y2 = cy + ar * Math.sin(angle);
+                    html += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" marker-end="url(#arrowhead)" />`;
+                });
+            }
+            html += '</g>';
+
+            // Central Mass
+            html += `<circle cx="${cx}" cy="${cy}" r="14" fill="#22c55e" stroke="#15803d" stroke-width="3" />`;
+
+            staticGroup.innerHTML = html;
+        }
+
+        function calcPhysics(pos, mass) {
+            const dx = cx - pos.x;
+            const dy = cy - pos.y;
+            const r = Math.max(Math.sqrt(dx * dx + dy * dy), 10);
+            const forceMag = (G * M * mass) / (r * r);
+            const fx = forceMag * (dx / r);
+            const fy = forceMag * (dy / r);
+            
+            const forceScale = 2;
+            const maxVisualLength = 400;
+            const currentVisualLength = forceMag * forceScale;
+            const actualScale = currentVisualLength > maxVisualLength ? maxVisualLength / forceMag : forceScale;
+            
+            return { r, forceMag, vfx: fx * actualScale, vfy: fy * actualScale };
+        }
+
+        function updateUI() {
+            const p1 = calcPhysics(state.pos1, state.m1);
+            const p2 = calcPhysics(state.pos2, state.m2);
+
+            // Update Mass 1
+            if (state.show1) {
+                controls1.style.display = 'block';
+                m1Val.textContent = state.m1 + ' kg';
+                r1Val.textContent = p1.r.toFixed(1) + ' m';
+                g1Val.textContent = ((G * M) / (p1.r * p1.r)).toFixed(2) + ' N/kg';
+                f1Val.textContent = p1.forceMag.toFixed(1) + ' N';
+
+                m1Circle.setAttribute('cx', state.pos1.x);
+                m1Circle.setAttribute('cy', state.pos1.y);
+                m1Circle.setAttribute('r', 8 + state.m1 * 0.15);
+                m1Circle.style.display = 'block';
+
+                if (p1.r > 20) {
+                    f1Line.setAttribute('x1', state.pos1.x);
+                    f1Line.setAttribute('y1', state.pos1.y);
+                    f1Line.setAttribute('x2', state.pos1.x + p1.vfx);
+                    f1Line.setAttribute('y2', state.pos1.y + p1.vfy);
+                    f1Line.style.display = 'block';
+                } else {
+                    f1Line.style.display = 'none';
+                }
+            } else {
+                controls1.style.display = 'none';
+                m1Circle.style.display = 'none';
+                f1Line.style.display = 'none';
+            }
+
+            // Update Mass 2
+            if (state.show2) {
+                controls2.style.display = 'block';
+                m2Val.textContent = state.m2 + ' kg';
+                r2Val.textContent = p2.r.toFixed(1) + ' m';
+                g2Val.textContent = ((G * M) / (p2.r * p2.r)).toFixed(2) + ' N/kg';
+                f2Val.textContent = p2.forceMag.toFixed(1) + ' N';
+
+                m2Circle.setAttribute('cx', state.pos2.x);
+                m2Circle.setAttribute('cy', state.pos2.y);
+                m2Circle.setAttribute('r', 8 + state.m2 * 0.15);
+                m2Circle.style.display = 'block';
+
+                if (p2.r > 20) {
+                    f2Line.setAttribute('x1', state.pos2.x);
+                    f2Line.setAttribute('y1', state.pos2.y);
+                    f2Line.setAttribute('x2', state.pos2.x + p2.vfx);
+                    f2Line.setAttribute('y2', state.pos2.y + p2.vfy);
+                    f2Line.style.display = 'block';
+                } else {
+                    f2Line.style.display = 'none';
+                }
+            } else {
+                controls2.style.display = 'none';
+                m2Circle.style.display = 'none';
+                f2Line.style.display = 'none';
+            }
+        }
+
+        // Event Listeners
+        btn1.addEventListener('click', () => {
+            state.show1 = !state.show1;
+            btn1.textContent = state.show1 ? 'Hide' : 'Show';
+            updateUI();
+        });
+
+        btn2.addEventListener('click', () => {
+            state.show2 = !state.show2;
+            btn2.textContent = state.show2 ? 'Hide' : 'Show';
+            updateUI();
+        });
+
+        m1Slider.addEventListener('input', (e) => {
+            state.m1 = Number(e.target.value);
+            updateUI();
+        });
+
+        m2Slider.addEventListener('input', (e) => {
+            state.m2 = Number(e.target.value);
+            updateUI();
+        });
+
+        function getMousePosition(evt) {
+            const CTM = svg.getScreenCTM();
+            return {
+                x: (evt.clientX - CTM.e) / CTM.a,
+                y: (evt.clientY - CTM.f) / CTM.d
+            };
+        }
+
+        svg.addEventListener('pointermove', (e) => {
+            if (state.dragging1) {
+                state.pos1 = getMousePosition(e);
+                updateUI();
+            } else if (state.dragging2) {
+                state.pos2 = getMousePosition(e);
+                updateUI();
+            }
+        });
+
+        svg.addEventListener('pointerup', (e) => {
+            state.dragging1 = false;
+            state.dragging2 = false;
+            svg.releasePointerCapture(e.pointerId);
+            m1Circle.classList.remove('cursor-grabbing');
+            m2Circle.classList.remove('cursor-grabbing');
+        });
+
+        svg.addEventListener('pointerleave', (e) => {
+            state.dragging1 = false;
+            state.dragging2 = false;
+            m1Circle.classList.remove('cursor-grabbing');
+            m2Circle.classList.remove('cursor-grabbing');
+        });
+
+        m1Circle.addEventListener('pointerdown', (e) => {
+            if (!state.show1) return;
+            state.dragging1 = true;
+            svg.setPointerCapture(e.pointerId);
+            m1Circle.classList.add('cursor-grabbing');
+            e.preventDefault();
+        });
+
+        m2Circle.addEventListener('pointerdown', (e) => {
+            if (!state.show2) return;
+            state.dragging2 = true;
+            svg.setPointerCapture(e.pointerId);
+            m2Circle.classList.add('cursor-grabbing');
+            e.preventDefault();
+        });
+
+        // Initialize
+        initStaticSVG();
+        updateUI();
+    </script>
+</body>
+</html>
